@@ -1,0 +1,1420 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 3
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.file	"main.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.global	TimerPeriod
+  21              		.section	.data.TimerPeriod,"aw",%progbits
+  22              		.align	2
+  25              	TimerPeriod:
+  26 0000 20A10700 		.word	500000
+  27              		.section	.text.LED_init,"ax",%progbits
+  28              		.align	2
+  29              		.global	LED_init
+  30              		.thumb
+  31              		.thumb_func
+  33              	LED_init:
+  34              	.LFB111:
+  35              		.file 1 "../src/main.c"
+   1:../src/main.c **** #include "main.h"
+   2:../src/main.c **** //#include <stdio.h>
+   3:../src/main.c **** #include "stdbool.h"
+   4:../src/main.c **** 
+   5:../src/main.c **** #define VD8_ON NT_GPIOC->MASKHIGHBYTE_bit[32].MASKHB = 0
+   6:../src/main.c **** #define VD8_OFF NT_GPIOC->MASKHIGHBYTE_bit[32].MASKHB = 32
+   7:../src/main.c **** #define VD9_ON NT_GPIOC->MASKHIGHBYTE_bit[64].MASKHB = 0
+   8:../src/main.c **** #define VD9_OFF NT_GPIOC->MASKHIGHBYTE_bit[64].MASKHB = 64
+   9:../src/main.c **** #define VD10_ON NT_GPIOC->MASKHIGHBYTE_bit[128].MASKHB = 0
+  10:../src/main.c **** #define VD10_OFF NT_GPIOC->MASKHIGHBYTE_bit[128].MASKHB = 128
+  11:../src/main.c **** #define VD11_ON NT_GPIOD->MASKHIGHBYTE_bit[32].MASKHB = 0
+  12:../src/main.c **** #define VD11_OFF NT_GPIOD->MASKHIGHBYTE_bit[32].MASKHB = 32
+  13:../src/main.c **** #define VD13_ON NT_GPIOD->MASKHIGHBYTE_bit[64].MASKHB = 0
+  14:../src/main.c **** #define VD13_OFF NT_GPIOD->MASKHIGHBYTE_bit[64].MASKHB = 64
+  15:../src/main.c **** #define VD14_ON NT_GPIOD->MASKHIGHBYTE_bit[128].MASKHB = 0
+  16:../src/main.c **** #define VD14_OFF NT_GPIOD->MASKHIGHBYTE_bit[128].MASKHB = 128
+  17:../src/main.c **** #define VD15_ON NT_GPIOE->MASKLOWBYTE_bit[4].MASKLB = 0
+  18:../src/main.c **** #define VD15_OFF NT_GPIOE->MASKLOWBYTE_bit[4].MASKLB = 4
+  19:../src/main.c **** #define VD16_ON NT_GPIOE->MASKLOWBYTE_bit[8].MASKLB = 0
+  20:../src/main.c **** #define VD16_OFF NT_GPIOE->MASKLOWBYTE_bit[8].MASKLB = 8
+  21:../src/main.c **** //Переопределение портов на выкл
+  22:../src/main.c **** #define PB15_OFF NT_GPIOB->MASKHIGHBYTE_bit[128].MASKHB = 0
+  23:../src/main.c **** #define PA12_OFF NT_GPIOA->MASKHIGHBYTE_bit[64].MASKHB = 0
+  24:../src/main.c **** #define PA14_OFF NT_GPIOA->MASKHIGHBYTE_bit[16].MASKHB = 0
+  25:../src/main.c **** //Переопределение портов на вкл
+  26:../src/main.c **** #define PB14_ON NT_GPIOB->MASKHIGHBYTE_bit[64].MASKHB = 64
+  27:../src/main.c **** #define PB13_ON NT_GPIOB->MASKHIGHBYTE_bit[32].MASKHB = 32
+  28:../src/main.c **** #define PA10_ON NT_GPIOA->MASKHIGHBYTE_bit[4].MASKHB = 4
+  29:../src/main.c **** #define PA8_ON NT_GPIOA->MASKHIGHBYTE_bit[1].MASKHB = 1
+  30:../src/main.c **** //Переопределение портов на вкл
+  31:../src/main.c **** #define PB15_ON NT_GPIOB->MASKHIGHBYTE_bit[128].MASKHB = 128
+  32:../src/main.c **** #define PA12_ON NT_GPIOA->MASKHIGHBYTE_bit[64].MASKHB = 64
+  33:../src/main.c **** #define PA14_ON NT_GPIOA->MASKHIGHBYTE_bit[16].MASKHB = 16
+  34:../src/main.c **** //Переопределение портов на выкл
+  35:../src/main.c **** #define PB14_OFF NT_GPIOB->MASKHIGHBYTE_bit[64].MASKHB = 0
+  36:../src/main.c **** #define PB13_OFF NT_GPIOB->MASKHIGHBYTE_bit[32].MASKHB = 0
+  37:../src/main.c **** #define PA10_OFF NT_GPIOA->MASKHIGHBYTE_bit[4].MASKHB = 0
+  38:../src/main.c **** #define PA8_OFF NT_GPIOA->MASKHIGHBYTE_bit[1].MASKHB = 0
+  39:../src/main.c **** // Константы
+  40:../src/main.c **** #define CONST_ADC 1638.4
+  41:../src/main.c **** //Глобальная переменная периода счета таймера (может быть изменена при остановке расчета в окне про
+  42:../src/main.c **** int TimerPeriod = 500000;
+  43:../src/main.c **** //Функция инициализации дискретных выходов микроконтроллера для управления светодиодами
+  44:../src/main.c **** void LED_init (void) {
+  36              		.loc 1 44 0
+  37              		.cfi_startproc
+  38              		@ args = 0, pretend = 0, frame = 0
+  39              		@ frame_needed = 1, uses_anonymous_args = 0
+  40              		@ link register save eliminated.
+  41 0000 80B4     		push	{r7}
+  42              		.cfi_def_cfa_offset 4
+  43              		.cfi_offset 7, -4
+  44 0002 00AF     		add	r7, sp, #0
+  45              		.cfi_def_cfa_register 7
+  45:../src/main.c ****     // Переопределения ножек для работы с АЦП(на входы и выходы)
+  46:../src/main.c ****     //входы с ацп
+  47:../src/main.c ****     NT_GPIOA->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 12);
+  46              		.loc 1 47 0
+  47 0004 0023     		movs	r3, #0
+  48 0006 C8F20103 		movt	r3, 32769
+  49 000a DA69     		ldr	r2, [r3, #28]
+  50 000c 4FF48051 		mov	r1, #4096
+  51 0010 61F30F02 		bfi	r2, r1, #0, #16
+  52 0014 DA61     		str	r2, [r3, #28]
+  48:../src/main.c ****     NT_GPIOA->OUTENSET_bit.OUTENSET |= (0 << 12);
+  53              		.loc 1 48 0
+  54 0016 0023     		movs	r3, #0
+  55 0018 C8F20103 		movt	r3, 32769
+  56 001c 0022     		movs	r2, #0
+  57 001e C8F20102 		movt	r2, 32769
+  58 0022 1269     		ldr	r2, [r2, #16]
+  59 0024 91B2     		uxth	r1, r2
+  60 0026 1A69     		ldr	r2, [r3, #16]
+  61 0028 61F30F02 		bfi	r2, r1, #0, #16
+  62 002c 1A61     		str	r2, [r3, #16]
+  49:../src/main.c ****     NT_GPIOA->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 14);
+  63              		.loc 1 49 0
+  64 002e 0023     		movs	r3, #0
+  65 0030 C8F20103 		movt	r3, 32769
+  66 0034 DA69     		ldr	r2, [r3, #28]
+  67 0036 4FF48041 		mov	r1, #16384
+  68 003a 61F30F02 		bfi	r2, r1, #0, #16
+  69 003e DA61     		str	r2, [r3, #28]
+  50:../src/main.c ****     NT_GPIOA->OUTENSET_bit.OUTENSET |= (0 << 14);
+  70              		.loc 1 50 0
+  71 0040 0023     		movs	r3, #0
+  72 0042 C8F20103 		movt	r3, 32769
+  73 0046 0022     		movs	r2, #0
+  74 0048 C8F20102 		movt	r2, 32769
+  75 004c 1269     		ldr	r2, [r2, #16]
+  76 004e 91B2     		uxth	r1, r2
+  77 0050 1A69     		ldr	r2, [r3, #16]
+  78 0052 61F30F02 		bfi	r2, r1, #0, #16
+  79 0056 1A61     		str	r2, [r3, #16]
+  51:../src/main.c ****     //выходы ацп
+  52:../src/main.c ****     NT_GPIOA->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 8);
+  80              		.loc 1 52 0
+  81 0058 0023     		movs	r3, #0
+  82 005a C8F20103 		movt	r3, 32769
+  83 005e DA69     		ldr	r2, [r3, #28]
+  84 0060 4FF48071 		mov	r1, #256
+  85 0064 61F30F02 		bfi	r2, r1, #0, #16
+  86 0068 DA61     		str	r2, [r3, #28]
+  53:../src/main.c ****     NT_GPIOA->OUTENSET_bit.OUTENSET |= (1 << 8);
+  87              		.loc 1 53 0
+  88 006a 0023     		movs	r3, #0
+  89 006c C8F20103 		movt	r3, 32769
+  90 0070 0022     		movs	r2, #0
+  91 0072 C8F20102 		movt	r2, 32769
+  92 0076 1269     		ldr	r2, [r2, #16]
+  93 0078 92B2     		uxth	r2, r2
+  94 007a 42F48072 		orr	r2, r2, #256
+  95 007e 91B2     		uxth	r1, r2
+  96 0080 1A69     		ldr	r2, [r3, #16]
+  97 0082 61F30F02 		bfi	r2, r1, #0, #16
+  98 0086 1A61     		str	r2, [r3, #16]
+  54:../src/main.c ****     NT_GPIOA->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 10);
+  99              		.loc 1 54 0
+ 100 0088 0023     		movs	r3, #0
+ 101 008a C8F20103 		movt	r3, 32769
+ 102 008e DA69     		ldr	r2, [r3, #28]
+ 103 0090 4FF48061 		mov	r1, #1024
+ 104 0094 61F30F02 		bfi	r2, r1, #0, #16
+ 105 0098 DA61     		str	r2, [r3, #28]
+  55:../src/main.c ****     NT_GPIOA->OUTENSET_bit.OUTENSET |= (1 << 10);
+ 106              		.loc 1 55 0
+ 107 009a 0023     		movs	r3, #0
+ 108 009c C8F20103 		movt	r3, 32769
+ 109 00a0 0022     		movs	r2, #0
+ 110 00a2 C8F20102 		movt	r2, 32769
+ 111 00a6 1269     		ldr	r2, [r2, #16]
+ 112 00a8 92B2     		uxth	r2, r2
+ 113 00aa 42F48062 		orr	r2, r2, #1024
+ 114 00ae 91B2     		uxth	r1, r2
+ 115 00b0 1A69     		ldr	r2, [r3, #16]
+ 116 00b2 61F30F02 		bfi	r2, r1, #0, #16
+ 117 00b6 1A61     		str	r2, [r3, #16]
+  56:../src/main.c ****     NT_GPIOB->ALTFUNCSET_bit.ALTFUNCSET = (1 << 15);
+ 118              		.loc 1 56 0
+ 119 00b8 4FF48053 		mov	r3, #4096
+ 120 00bc C8F20103 		movt	r3, 32769
+ 121 00c0 9A69     		ldr	r2, [r3, #24]
+ 122 00c2 4FF40041 		mov	r1, #32768
+ 123 00c6 61F30F02 		bfi	r2, r1, #0, #16
+ 124 00ca 9A61     		str	r2, [r3, #24]
+  57:../src/main.c ****     NT_GPIOB->OUTENSET_bit.OUTENSET |= (0 << 15);
+ 125              		.loc 1 57 0
+ 126 00cc 4FF48053 		mov	r3, #4096
+ 127 00d0 C8F20103 		movt	r3, 32769
+ 128 00d4 4FF48052 		mov	r2, #4096
+ 129 00d8 C8F20102 		movt	r2, 32769
+ 130 00dc 1269     		ldr	r2, [r2, #16]
+ 131 00de 91B2     		uxth	r1, r2
+ 132 00e0 1A69     		ldr	r2, [r3, #16]
+ 133 00e2 61F30F02 		bfi	r2, r1, #0, #16
+ 134 00e6 1A61     		str	r2, [r3, #16]
+  58:../src/main.c ****     //выходы ацп
+  59:../src/main.c ****     NT_GPIOB->ALTFUNCSET_bit.ALTFUNCSET = (1 << 14);
+ 135              		.loc 1 59 0
+ 136 00e8 4FF48053 		mov	r3, #4096
+ 137 00ec C8F20103 		movt	r3, 32769
+ 138 00f0 9A69     		ldr	r2, [r3, #24]
+ 139 00f2 4FF48041 		mov	r1, #16384
+ 140 00f6 61F30F02 		bfi	r2, r1, #0, #16
+ 141 00fa 9A61     		str	r2, [r3, #24]
+  60:../src/main.c ****     NT_GPIOB->OUTENSET_bit.OUTENSET |= (1 << 14);
+ 142              		.loc 1 60 0
+ 143 00fc 4FF48053 		mov	r3, #4096
+ 144 0100 C8F20103 		movt	r3, 32769
+ 145 0104 4FF48052 		mov	r2, #4096
+ 146 0108 C8F20102 		movt	r2, 32769
+ 147 010c 1269     		ldr	r2, [r2, #16]
+ 148 010e 92B2     		uxth	r2, r2
+ 149 0110 42F48042 		orr	r2, r2, #16384
+ 150 0114 91B2     		uxth	r1, r2
+ 151 0116 1A69     		ldr	r2, [r3, #16]
+ 152 0118 61F30F02 		bfi	r2, r1, #0, #16
+ 153 011c 1A61     		str	r2, [r3, #16]
+  61:../src/main.c ****     NT_GPIOB->ALTFUNCSET_bit.ALTFUNCSET = (1 << 13); // поменять если не запашет!!!!
+ 154              		.loc 1 61 0
+ 155 011e 4FF48053 		mov	r3, #4096
+ 156 0122 C8F20103 		movt	r3, 32769
+ 157 0126 9A69     		ldr	r2, [r3, #24]
+ 158 0128 4FF40051 		mov	r1, #8192
+ 159 012c 61F30F02 		bfi	r2, r1, #0, #16
+ 160 0130 9A61     		str	r2, [r3, #24]
+  62:../src/main.c ****     NT_GPIOB->OUTENSET_bit.OUTENSET |= (1 << 13);
+ 161              		.loc 1 62 0
+ 162 0132 4FF48053 		mov	r3, #4096
+ 163 0136 C8F20103 		movt	r3, 32769
+ 164 013a 4FF48052 		mov	r2, #4096
+ 165 013e C8F20102 		movt	r2, 32769
+ 166 0142 1269     		ldr	r2, [r2, #16]
+ 167 0144 92B2     		uxth	r2, r2
+ 168 0146 42F40052 		orr	r2, r2, #8192
+ 169 014a 91B2     		uxth	r1, r2
+ 170 014c 1A69     		ldr	r2, [r3, #16]
+ 171 014e 61F30F02 		bfi	r2, r1, #0, #16
+ 172 0152 1A61     		str	r2, [r3, #16]
+  63:../src/main.c ****     //Настройка ножек под светодиоды
+  64:../src/main.c ****     NT_GPIOC->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 13);
+ 173              		.loc 1 64 0
+ 174 0154 4FF40053 		mov	r3, #8192
+ 175 0158 C8F20103 		movt	r3, 32769
+ 176 015c DA69     		ldr	r2, [r3, #28]
+ 177 015e 4FF40051 		mov	r1, #8192
+ 178 0162 61F30F02 		bfi	r2, r1, #0, #16
+ 179 0166 DA61     		str	r2, [r3, #28]
+  65:../src/main.c ****     NT_GPIOC->OUTENSET_bit.OUTENSET |= (1 << 13);
+ 180              		.loc 1 65 0
+ 181 0168 4FF40053 		mov	r3, #8192
+ 182 016c C8F20103 		movt	r3, 32769
+ 183 0170 4FF40052 		mov	r2, #8192
+ 184 0174 C8F20102 		movt	r2, 32769
+ 185 0178 1269     		ldr	r2, [r2, #16]
+ 186 017a 92B2     		uxth	r2, r2
+ 187 017c 42F40052 		orr	r2, r2, #8192
+ 188 0180 91B2     		uxth	r1, r2
+ 189 0182 1A69     		ldr	r2, [r3, #16]
+ 190 0184 61F30F02 		bfi	r2, r1, #0, #16
+ 191 0188 1A61     		str	r2, [r3, #16]
+  66:../src/main.c ****     NT_GPIOC->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 14);
+ 192              		.loc 1 66 0
+ 193 018a 4FF40053 		mov	r3, #8192
+ 194 018e C8F20103 		movt	r3, 32769
+ 195 0192 DA69     		ldr	r2, [r3, #28]
+ 196 0194 4FF48041 		mov	r1, #16384
+ 197 0198 61F30F02 		bfi	r2, r1, #0, #16
+ 198 019c DA61     		str	r2, [r3, #28]
+  67:../src/main.c ****     NT_GPIOC->OUTENSET_bit.OUTENSET |= (1 << 14);
+ 199              		.loc 1 67 0
+ 200 019e 4FF40053 		mov	r3, #8192
+ 201 01a2 C8F20103 		movt	r3, 32769
+ 202 01a6 4FF40052 		mov	r2, #8192
+ 203 01aa C8F20102 		movt	r2, 32769
+ 204 01ae 1269     		ldr	r2, [r2, #16]
+ 205 01b0 92B2     		uxth	r2, r2
+ 206 01b2 42F48042 		orr	r2, r2, #16384
+ 207 01b6 91B2     		uxth	r1, r2
+ 208 01b8 1A69     		ldr	r2, [r3, #16]
+ 209 01ba 61F30F02 		bfi	r2, r1, #0, #16
+ 210 01be 1A61     		str	r2, [r3, #16]
+  68:../src/main.c ****     NT_GPIOC->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 15);
+ 211              		.loc 1 68 0
+ 212 01c0 4FF40053 		mov	r3, #8192
+ 213 01c4 C8F20103 		movt	r3, 32769
+ 214 01c8 DA69     		ldr	r2, [r3, #28]
+ 215 01ca 4FF40041 		mov	r1, #32768
+ 216 01ce 61F30F02 		bfi	r2, r1, #0, #16
+ 217 01d2 DA61     		str	r2, [r3, #28]
+  69:../src/main.c ****     NT_GPIOC->OUTENSET_bit.OUTENSET |= (1 << 15);
+ 218              		.loc 1 69 0
+ 219 01d4 4FF40053 		mov	r3, #8192
+ 220 01d8 C8F20103 		movt	r3, 32769
+ 221 01dc 4FF40052 		mov	r2, #8192
+ 222 01e0 C8F20102 		movt	r2, 32769
+ 223 01e4 1269     		ldr	r2, [r2, #16]
+ 224 01e6 92B2     		uxth	r2, r2
+ 225 01e8 6FEA4242 		mvn	r2, r2, lsl #17
+ 226 01ec 6FEA5242 		mvn	r2, r2, lsr #17
+ 227 01f0 91B2     		uxth	r1, r2
+ 228 01f2 1A69     		ldr	r2, [r3, #16]
+ 229 01f4 61F30F02 		bfi	r2, r1, #0, #16
+ 230 01f8 1A61     		str	r2, [r3, #16]
+  70:../src/main.c ****     NT_GPIOD->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 13);
+ 231              		.loc 1 70 0
+ 232 01fa 4FF44053 		mov	r3, #12288
+ 233 01fe C8F20103 		movt	r3, 32769
+ 234 0202 DA69     		ldr	r2, [r3, #28]
+ 235 0204 4FF40051 		mov	r1, #8192
+ 236 0208 61F30F02 		bfi	r2, r1, #0, #16
+ 237 020c DA61     		str	r2, [r3, #28]
+  71:../src/main.c ****     NT_GPIOD->OUTENSET_bit.OUTENSET |= (1 << 13);
+ 238              		.loc 1 71 0
+ 239 020e 4FF44053 		mov	r3, #12288
+ 240 0212 C8F20103 		movt	r3, 32769
+ 241 0216 4FF44052 		mov	r2, #12288
+ 242 021a C8F20102 		movt	r2, 32769
+ 243 021e 1269     		ldr	r2, [r2, #16]
+ 244 0220 92B2     		uxth	r2, r2
+ 245 0222 42F40052 		orr	r2, r2, #8192
+ 246 0226 91B2     		uxth	r1, r2
+ 247 0228 1A69     		ldr	r2, [r3, #16]
+ 248 022a 61F30F02 		bfi	r2, r1, #0, #16
+ 249 022e 1A61     		str	r2, [r3, #16]
+  72:../src/main.c ****     NT_GPIOD->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 14);
+ 250              		.loc 1 72 0
+ 251 0230 4FF44053 		mov	r3, #12288
+ 252 0234 C8F20103 		movt	r3, 32769
+ 253 0238 DA69     		ldr	r2, [r3, #28]
+ 254 023a 4FF48041 		mov	r1, #16384
+ 255 023e 61F30F02 		bfi	r2, r1, #0, #16
+ 256 0242 DA61     		str	r2, [r3, #28]
+  73:../src/main.c ****     NT_GPIOD->OUTENSET_bit.OUTENSET |= (1 << 14);
+ 257              		.loc 1 73 0
+ 258 0244 4FF44053 		mov	r3, #12288
+ 259 0248 C8F20103 		movt	r3, 32769
+ 260 024c 4FF44052 		mov	r2, #12288
+ 261 0250 C8F20102 		movt	r2, 32769
+ 262 0254 1269     		ldr	r2, [r2, #16]
+ 263 0256 92B2     		uxth	r2, r2
+ 264 0258 42F48042 		orr	r2, r2, #16384
+ 265 025c 91B2     		uxth	r1, r2
+ 266 025e 1A69     		ldr	r2, [r3, #16]
+ 267 0260 61F30F02 		bfi	r2, r1, #0, #16
+ 268 0264 1A61     		str	r2, [r3, #16]
+  74:../src/main.c ****     NT_GPIOD->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 15);
+ 269              		.loc 1 74 0
+ 270 0266 4FF44053 		mov	r3, #12288
+ 271 026a C8F20103 		movt	r3, 32769
+ 272 026e DA69     		ldr	r2, [r3, #28]
+ 273 0270 4FF40041 		mov	r1, #32768
+ 274 0274 61F30F02 		bfi	r2, r1, #0, #16
+ 275 0278 DA61     		str	r2, [r3, #28]
+  75:../src/main.c ****     NT_GPIOD->OUTENSET_bit.OUTENSET |= (1 << 15);
+ 276              		.loc 1 75 0
+ 277 027a 4FF44053 		mov	r3, #12288
+ 278 027e C8F20103 		movt	r3, 32769
+ 279 0282 4FF44052 		mov	r2, #12288
+ 280 0286 C8F20102 		movt	r2, 32769
+ 281 028a 1269     		ldr	r2, [r2, #16]
+ 282 028c 92B2     		uxth	r2, r2
+ 283 028e 6FEA4242 		mvn	r2, r2, lsl #17
+ 284 0292 6FEA5242 		mvn	r2, r2, lsr #17
+ 285 0296 91B2     		uxth	r1, r2
+ 286 0298 1A69     		ldr	r2, [r3, #16]
+ 287 029a 61F30F02 		bfi	r2, r1, #0, #16
+ 288 029e 1A61     		str	r2, [r3, #16]
+  76:../src/main.c ****     NT_GPIOE->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 2);
+ 289              		.loc 1 76 0
+ 290 02a0 4FF48043 		mov	r3, #16384
+ 291 02a4 C8F20103 		movt	r3, 32769
+ 292 02a8 DA69     		ldr	r2, [r3, #28]
+ 293 02aa 0421     		movs	r1, #4
+ 294 02ac 61F30F02 		bfi	r2, r1, #0, #16
+ 295 02b0 DA61     		str	r2, [r3, #28]
+  77:../src/main.c ****     NT_GPIOE->OUTENSET_bit.OUTENSET |= (1 << 2);
+ 296              		.loc 1 77 0
+ 297 02b2 4FF48043 		mov	r3, #16384
+ 298 02b6 C8F20103 		movt	r3, 32769
+ 299 02ba 4FF48042 		mov	r2, #16384
+ 300 02be C8F20102 		movt	r2, 32769
+ 301 02c2 1269     		ldr	r2, [r2, #16]
+ 302 02c4 92B2     		uxth	r2, r2
+ 303 02c6 42F00402 		orr	r2, r2, #4
+ 304 02ca 91B2     		uxth	r1, r2
+ 305 02cc 1A69     		ldr	r2, [r3, #16]
+ 306 02ce 61F30F02 		bfi	r2, r1, #0, #16
+ 307 02d2 1A61     		str	r2, [r3, #16]
+  78:../src/main.c ****     NT_GPIOE->ALTFUNCCLR_bit.ALTFUNCCLR = (1 << 3);
+ 308              		.loc 1 78 0
+ 309 02d4 4FF48043 		mov	r3, #16384
+ 310 02d8 C8F20103 		movt	r3, 32769
+ 311 02dc DA69     		ldr	r2, [r3, #28]
+ 312 02de 0821     		movs	r1, #8
+ 313 02e0 61F30F02 		bfi	r2, r1, #0, #16
+ 314 02e4 DA61     		str	r2, [r3, #28]
+  79:../src/main.c ****     NT_GPIOE->OUTENSET_bit.OUTENSET |= (1 << 3);
+ 315              		.loc 1 79 0
+ 316 02e6 4FF48043 		mov	r3, #16384
+ 317 02ea C8F20103 		movt	r3, 32769
+ 318 02ee 4FF48042 		mov	r2, #16384
+ 319 02f2 C8F20102 		movt	r2, 32769
+ 320 02f6 1269     		ldr	r2, [r2, #16]
+ 321 02f8 92B2     		uxth	r2, r2
+ 322 02fa 42F00802 		orr	r2, r2, #8
+ 323 02fe 91B2     		uxth	r1, r2
+ 324 0300 1A69     		ldr	r2, [r3, #16]
+ 325 0302 61F30F02 		bfi	r2, r1, #0, #16
+ 326 0306 1A61     		str	r2, [r3, #16]
+  80:../src/main.c ****     NT_COMMON_REG->GPIOPCTLB_bit.PIN13 = 2;
+ 327              		.loc 1 80 0
+ 328 0308 0023     		movs	r3, #0
+ 329 030a C8F20303 		movt	r3, 32771
+ 330 030e DA69     		ldr	r2, [r3, #28]
+ 331 0310 0221     		movs	r1, #2
+ 332 0312 61F39B62 		bfi	r2, r1, #26, #2
+ 333 0316 DA61     		str	r2, [r3, #28]
+  81:../src/main.c ****     NT_COMMON_REG->GPIOPCTLB_bit.PIN14 = 2;
+ 334              		.loc 1 81 0
+ 335 0318 0023     		movs	r3, #0
+ 336 031a C8F20303 		movt	r3, 32771
+ 337 031e DA69     		ldr	r2, [r3, #28]
+ 338 0320 0221     		movs	r1, #2
+ 339 0322 61F31D72 		bfi	r2, r1, #28, #2
+ 340 0326 DA61     		str	r2, [r3, #28]
+  82:../src/main.c ****     NT_COMMON_REG->GPIOPCTLB_bit.PIN15 = 2;
+ 341              		.loc 1 82 0
+ 342 0328 0023     		movs	r3, #0
+ 343 032a C8F20303 		movt	r3, 32771
+ 344 032e DA69     		ldr	r2, [r3, #28]
+ 345 0330 0221     		movs	r1, #2
+ 346 0332 61F39F72 		bfi	r2, r1, #30, #2
+ 347 0336 DA61     		str	r2, [r3, #28]
+  83:../src/main.c ****     NT_COMMON_REG->SPI_CLK_bit.DIV_SPI2 = 0x1;
+ 348              		.loc 1 83 0
+ 349 0338 0023     		movs	r3, #0
+ 350 033a C8F20303 		movt	r3, 32771
+ 351 033e D3F8C420 		ldr	r2, [r3, #196]
+ 352 0342 0121     		movs	r1, #1
+ 353 0344 61F39742 		bfi	r2, r1, #18, #6
+ 354 0348 C3F8C420 		str	r2, [r3, #196]
+  84:../src/main.c ****     NT_COMMON_REG->SPI_CLK_bit.DIVEN_SPI2 = 0x1;
+ 355              		.loc 1 84 0
+ 356 034c 0023     		movs	r3, #0
+ 357 034e C8F20303 		movt	r3, 32771
+ 358 0352 D3F8C420 		ldr	r2, [r3, #196]
+ 359 0356 42F40032 		orr	r2, r2, #131072
+ 360 035a C3F8C420 		str	r2, [r3, #196]
+  85:../src/main.c ****     NT_COMMON_REG->SPI_CLK_bit.CLKEN_SPI2 = 0x1;
+ 361              		.loc 1 85 0
+ 362 035e 0023     		movs	r3, #0
+ 363 0360 C8F20303 		movt	r3, 32771
+ 364 0364 D3F8C420 		ldr	r2, [r3, #196]
+ 365 0368 42F48032 		orr	r2, r2, #65536
+ 366 036c C3F8C420 		str	r2, [r3, #196]
+  86:../src/main.c ****     NT_SPI2->SPI_CR0_bit.DSS = 0xd;
+ 367              		.loc 1 86 0
+ 368 0370 0023     		movs	r3, #0
+ 369 0372 CAF20203 		movt	r3, 40962
+ 370 0376 1A68     		ldr	r2, [r3]
+ 371 0378 0D21     		movs	r1, #13
+ 372 037a 61F30302 		bfi	r2, r1, #0, #4
+ 373 037e 1A60     		str	r2, [r3]
+  87:../src/main.c ****     NT_SPI2->SPI_CR0_bit.FRF = 0b00; // 00 - spi протокол обмена
+ 374              		.loc 1 87 0
+ 375 0380 0023     		movs	r3, #0
+ 376 0382 CAF20203 		movt	r3, 40962
+ 377 0386 1A68     		ldr	r2, [r3]
+ 378 0388 6FF30512 		bfc	r2, #4, #2
+ 379 038c 1A60     		str	r2, [r3]
+  88:../src/main.c ****     NT_SPI2->SPI_CR0_bit.SPO = 0b1; // полярность
+ 380              		.loc 1 88 0
+ 381 038e 0023     		movs	r3, #0
+ 382 0390 CAF20203 		movt	r3, 40962
+ 383 0394 1A68     		ldr	r2, [r3]
+ 384 0396 42F04002 		orr	r2, r2, #64
+ 385 039a 1A60     		str	r2, [r3]
+  89:../src/main.c ****     NT_SPI2->SPI_CR0_bit.SPH = 0b1;   // 0 - передний фронт
+ 386              		.loc 1 89 0
+ 387 039c 0023     		movs	r3, #0
+ 388 039e CAF20203 		movt	r3, 40962
+ 389 03a2 1A68     		ldr	r2, [r3]
+ 390 03a4 42F08002 		orr	r2, r2, #128
+ 391 03a8 1A60     		str	r2, [r3]
+  90:../src/main.c ****     NT_SPI2->SPI_CR0_bit.SCR = 0x2; //коэффициент деления
+ 392              		.loc 1 90 0
+ 393 03aa 0023     		movs	r3, #0
+ 394 03ac CAF20203 		movt	r3, 40962
+ 395 03b0 1A68     		ldr	r2, [r3]
+ 396 03b2 0221     		movs	r1, #2
+ 397 03b4 61F30F22 		bfi	r2, r1, #8, #8
+ 398 03b8 1A60     		str	r2, [r3]
+  91:../src/main.c ****     NT_SPI2->SPI_CR1_bit.SOD = 0b0;  // пока 0 - идет обмен
+ 399              		.loc 1 91 0
+ 400 03ba 0023     		movs	r3, #0
+ 401 03bc CAF20203 		movt	r3, 40962
+ 402 03c0 5A68     		ldr	r2, [r3, #4]
+ 403 03c2 6FF3C302 		bfc	r2, #3, #1
+ 404 03c6 5A60     		str	r2, [r3, #4]
+  92:../src/main.c ****     NT_SPI2->SPI_CR1_bit.MS = 0b0;   // 0 - режим работы "мастер"
+ 405              		.loc 1 92 0
+ 406 03c8 0023     		movs	r3, #0
+ 407 03ca CAF20203 		movt	r3, 40962
+ 408 03ce 5A68     		ldr	r2, [r3, #4]
+ 409 03d0 6FF38202 		bfc	r2, #2, #1
+ 410 03d4 5A60     		str	r2, [r3, #4]
+  93:../src/main.c ****     NT_COMMON_REG->UART_SPI_CLK_SEL_bit.SEL_SPI2 = 0b00;
+ 411              		.loc 1 93 0
+ 412 03d6 0023     		movs	r3, #0
+ 413 03d8 C8F20303 		movt	r3, 32771
+ 414 03dc D3F83821 		ldr	r2, [r3, #312]
+ 415 03e0 6FF30D32 		bfc	r2, #12, #2
+ 416 03e4 C3F83821 		str	r2, [r3, #312]
+  94:../src/main.c ****     NT_SPI2->SPI_CR1_bit.SSE = 0b1;
+ 417              		.loc 1 94 0
+ 418 03e8 0023     		movs	r3, #0
+ 419 03ea CAF20203 		movt	r3, 40962
+ 420 03ee 5A68     		ldr	r2, [r3, #4]
+ 421 03f0 42F00202 		orr	r2, r2, #2
+ 422 03f4 5A60     		str	r2, [r3, #4]
+  95:../src/main.c **** }
+ 423              		.loc 1 95 0
+ 424 03f6 BD46     		mov	sp, r7
+ 425              		@ sp needed
+ 426 03f8 5DF8047B 		ldr	r7, [sp], #4
+ 427 03fc 7047     		bx	lr
+ 428              		.cfi_endproc
+ 429              	.LFE111:
+ 431              		.global	i
+ 432 03fe 00BF     		.section	.bss.i,"aw",%nobits
+ 433              		.align	2
+ 436              	i:
+ 437 0000 00000000 		.space	4
+ 438              		.comm	busy,1,1
+ 439              		.comm	report,2,2
+ 440              		.comm	res,2,2
+ 441              		.comm	result,4,4
+ 442              		.section	.text.delay,"ax",%progbits
+ 443              		.align	2
+ 444              		.global	delay
+ 445              		.thumb
+ 446              		.thumb_func
+ 448              	delay:
+ 449              	.LFB112:
+  96:../src/main.c **** // Объявление переменных
+  97:../src/main.c **** int i=0;                         //счетчик задержки
+  98:../src/main.c **** bool busy; 						 //флаг занятости АЦП
+  99:../src/main.c **** unsigned short report;			 //
+ 100:../src/main.c **** signed short res;                //промежуточные результаты
+ 101:../src/main.c **** float result;                    //значение в Вольтах
+ 102:../src/main.c **** // Задержка
+ 103:../src/main.c **** void delay() {
+ 450              		.loc 1 103 0
+ 451              		.cfi_startproc
+ 452              		@ args = 0, pretend = 0, frame = 0
+ 453              		@ frame_needed = 1, uses_anonymous_args = 0
+ 454              		@ link register save eliminated.
+ 455 0000 80B4     		push	{r7}
+ 456              		.cfi_def_cfa_offset 4
+ 457              		.cfi_offset 7, -4
+ 458 0002 00AF     		add	r7, sp, #0
+ 459              		.cfi_def_cfa_register 7
+ 104:../src/main.c **** 	for (i = 0;i < 100000; i++) { }
+ 460              		.loc 1 104 0
+ 461 0004 40F20003 		movw	r3, #:lower16:i
+ 462 0008 C0F20003 		movt	r3, #:upper16:i
+ 463 000c 0022     		movs	r2, #0
+ 464 000e 1A60     		str	r2, [r3]
+ 465 0010 0AE0     		b	.L3
+ 466              	.L4:
+ 467              		.loc 1 104 0 is_stmt 0 discriminator 2
+ 468 0012 40F20003 		movw	r3, #:lower16:i
+ 469 0016 C0F20003 		movt	r3, #:upper16:i
+ 470 001a 1B68     		ldr	r3, [r3]
+ 471 001c 5A1C     		adds	r2, r3, #1
+ 472 001e 40F20003 		movw	r3, #:lower16:i
+ 473 0022 C0F20003 		movt	r3, #:upper16:i
+ 474 0026 1A60     		str	r2, [r3]
+ 475              	.L3:
+ 476              		.loc 1 104 0 discriminator 1
+ 477 0028 40F20003 		movw	r3, #:lower16:i
+ 478 002c C0F20003 		movt	r3, #:upper16:i
+ 479 0030 1A68     		ldr	r2, [r3]
+ 480 0032 48F29F63 		movw	r3, #34463
+ 481 0036 C0F20103 		movt	r3, 1
+ 482 003a 9A42     		cmp	r2, r3
+ 483 003c E9DD     		ble	.L4
+ 105:../src/main.c **** }
+ 484              		.loc 1 105 0 is_stmt 1
+ 485 003e BD46     		mov	sp, r7
+ 486              		@ sp needed
+ 487 0040 5DF8047B 		ldr	r7, [sp], #4
+ 488 0044 7047     		bx	lr
+ 489              		.cfi_endproc
+ 490              	.LFE112:
+ 492 0046 00BF     		.section	.text.ResetConvstAB,"ax",%progbits
+ 493              		.align	2
+ 494              		.global	ResetConvstAB
+ 495              		.thumb
+ 496              		.thumb_func
+ 498              	ResetConvstAB:
+ 499              	.LFB113:
+ 106:../src/main.c **** // Сброс Convst A и B
+ 107:../src/main.c **** void ResetConvstAB() {
+ 500              		.loc 1 107 0
+ 501              		.cfi_startproc
+ 502              		@ args = 0, pretend = 0, frame = 0
+ 503              		@ frame_needed = 1, uses_anonymous_args = 0
+ 504              		@ link register save eliminated.
+ 505 0000 80B4     		push	{r7}
+ 506              		.cfi_def_cfa_offset 4
+ 507              		.cfi_offset 7, -4
+ 508 0002 00AF     		add	r7, sp, #0
+ 509              		.cfi_def_cfa_register 7
+ 108:../src/main.c **** 	PA8_ON;
+ 510              		.loc 1 108 0
+ 511 0004 0023     		movs	r3, #0
+ 512 0006 C8F20103 		movt	r3, 32769
+ 513 000a D3F80428 		ldr	r2, [r3, #2052]
+ 514 000e 0121     		movs	r1, #1
+ 515 0010 61F30F22 		bfi	r2, r1, #8, #8
+ 516 0014 C3F80428 		str	r2, [r3, #2052]
+ 109:../src/main.c **** 	PA8_OFF;
+ 517              		.loc 1 109 0
+ 518 0018 0023     		movs	r3, #0
+ 519 001a C8F20103 		movt	r3, 32769
+ 520 001e D3F80428 		ldr	r2, [r3, #2052]
+ 521 0022 6FF30F22 		bfc	r2, #8, #8
+ 522 0026 C3F80428 		str	r2, [r3, #2052]
+ 110:../src/main.c **** 	PA8_ON;
+ 523              		.loc 1 110 0
+ 524 002a 0023     		movs	r3, #0
+ 525 002c C8F20103 		movt	r3, 32769
+ 526 0030 D3F80428 		ldr	r2, [r3, #2052]
+ 527 0034 0121     		movs	r1, #1
+ 528 0036 61F30F22 		bfi	r2, r1, #8, #8
+ 529 003a C3F80428 		str	r2, [r3, #2052]
+ 111:../src/main.c **** }
+ 530              		.loc 1 111 0
+ 531 003e BD46     		mov	sp, r7
+ 532              		@ sp needed
+ 533 0040 5DF8047B 		ldr	r7, [sp], #4
+ 534 0044 7047     		bx	lr
+ 535              		.cfi_endproc
+ 536              	.LFE113:
+ 538 0046 00BF     		.section	.text.ResetADC,"ax",%progbits
+ 539              		.align	2
+ 540              		.global	ResetADC
+ 541              		.thumb
+ 542              		.thumb_func
+ 544              	ResetADC:
+ 545              	.LFB114:
+ 112:../src/main.c **** // Сброс АЦП
+ 113:../src/main.c **** void ResetADC() {
+ 546              		.loc 1 113 0
+ 547              		.cfi_startproc
+ 548              		@ args = 0, pretend = 0, frame = 0
+ 549              		@ frame_needed = 1, uses_anonymous_args = 0
+ 550              		@ link register save eliminated.
+ 551 0000 80B4     		push	{r7}
+ 552              		.cfi_def_cfa_offset 4
+ 553              		.cfi_offset 7, -4
+ 554 0002 00AF     		add	r7, sp, #0
+ 555              		.cfi_def_cfa_register 7
+ 114:../src/main.c **** 	PA10_OFF;
+ 556              		.loc 1 114 0
+ 557 0004 0023     		movs	r3, #0
+ 558 0006 C8F20103 		movt	r3, 32769
+ 559 000a D3F81028 		ldr	r2, [r3, #2064]
+ 560 000e 6FF30F22 		bfc	r2, #8, #8
+ 561 0012 C3F81028 		str	r2, [r3, #2064]
+ 115:../src/main.c **** 	PA10_ON;
+ 562              		.loc 1 115 0
+ 563 0016 0023     		movs	r3, #0
+ 564 0018 C8F20103 		movt	r3, 32769
+ 565 001c D3F81028 		ldr	r2, [r3, #2064]
+ 566 0020 0421     		movs	r1, #4
+ 567 0022 61F30F22 		bfi	r2, r1, #8, #8
+ 568 0026 C3F81028 		str	r2, [r3, #2064]
+ 116:../src/main.c **** 	PA10_OFF;
+ 569              		.loc 1 116 0
+ 570 002a 0023     		movs	r3, #0
+ 571 002c C8F20103 		movt	r3, 32769
+ 572 0030 D3F81028 		ldr	r2, [r3, #2064]
+ 573 0034 6FF30F22 		bfc	r2, #8, #8
+ 574 0038 C3F81028 		str	r2, [r3, #2064]
+ 117:../src/main.c **** 	report = 0;
+ 575              		.loc 1 117 0
+ 576 003c 40F20003 		movw	r3, #:lower16:report
+ 577 0040 C0F20003 		movt	r3, #:upper16:report
+ 578 0044 0022     		movs	r2, #0
+ 579 0046 1A80     		strh	r2, [r3]	@ movhi
+ 118:../src/main.c **** }
+ 580              		.loc 1 118 0
+ 581 0048 BD46     		mov	sp, r7
+ 582              		@ sp needed
+ 583 004a 5DF8047B 		ldr	r7, [sp], #4
+ 584 004e 7047     		bx	lr
+ 585              		.cfi_endproc
+ 586              	.LFE114:
+ 588              		.section	.text.ResetLED,"ax",%progbits
+ 589              		.align	2
+ 590              		.global	ResetLED
+ 591              		.thumb
+ 592              		.thumb_func
+ 594              	ResetLED:
+ 595              	.LFB115:
+ 119:../src/main.c **** //Сброс светодиодов
+ 120:../src/main.c **** void ResetLED() {
+ 596              		.loc 1 120 0
+ 597              		.cfi_startproc
+ 598              		@ args = 0, pretend = 0, frame = 0
+ 599              		@ frame_needed = 1, uses_anonymous_args = 0
+ 600 0000 80B5     		push	{r7, lr}
+ 601              		.cfi_def_cfa_offset 8
+ 602              		.cfi_offset 7, -8
+ 603              		.cfi_offset 14, -4
+ 604 0002 00AF     		add	r7, sp, #0
+ 605              		.cfi_def_cfa_register 7
+ 121:../src/main.c **** 	delay();
+ 606              		.loc 1 121 0
+ 607 0004 FFF7FEFF 		bl	delay
+ 122:../src/main.c **** 	VD16_ON;
+ 608              		.loc 1 122 0
+ 609 0008 4FF48043 		mov	r3, #16384
+ 610 000c C8F20103 		movt	r3, 32769
+ 611 0010 D3F82024 		ldr	r2, [r3, #1056]
+ 612 0014 6FF30702 		bfc	r2, #0, #8
+ 613 0018 C3F82024 		str	r2, [r3, #1056]
+ 123:../src/main.c **** 	VD15_ON;
+ 614              		.loc 1 123 0
+ 615 001c 4FF48043 		mov	r3, #16384
+ 616 0020 C8F20103 		movt	r3, 32769
+ 617 0024 D3F81024 		ldr	r2, [r3, #1040]
+ 618 0028 6FF30702 		bfc	r2, #0, #8
+ 619 002c C3F81024 		str	r2, [r3, #1040]
+ 124:../src/main.c **** 	VD14_ON;
+ 620              		.loc 1 124 0
+ 621 0030 4FF44053 		mov	r3, #12288
+ 622 0034 C8F20103 		movt	r3, 32769
+ 623 0038 D3F8002A 		ldr	r2, [r3, #2560]
+ 624 003c 6FF30F22 		bfc	r2, #8, #8
+ 625 0040 C3F8002A 		str	r2, [r3, #2560]
+ 125:../src/main.c **** 	VD13_ON;
+ 626              		.loc 1 125 0
+ 627 0044 4FF44053 		mov	r3, #12288
+ 628 0048 C8F20103 		movt	r3, 32769
+ 629 004c D3F80029 		ldr	r2, [r3, #2304]
+ 630 0050 6FF30F22 		bfc	r2, #8, #8
+ 631 0054 C3F80029 		str	r2, [r3, #2304]
+ 126:../src/main.c **** 	VD11_ON;
+ 632              		.loc 1 126 0
+ 633 0058 4FF44053 		mov	r3, #12288
+ 634 005c C8F20103 		movt	r3, 32769
+ 635 0060 D3F88028 		ldr	r2, [r3, #2176]
+ 636 0064 6FF30F22 		bfc	r2, #8, #8
+ 637 0068 C3F88028 		str	r2, [r3, #2176]
+ 127:../src/main.c **** 	VD10_ON;
+ 638              		.loc 1 127 0
+ 639 006c 4FF40053 		mov	r3, #8192
+ 640 0070 C8F20103 		movt	r3, 32769
+ 641 0074 D3F8002A 		ldr	r2, [r3, #2560]
+ 642 0078 6FF30F22 		bfc	r2, #8, #8
+ 643 007c C3F8002A 		str	r2, [r3, #2560]
+ 128:../src/main.c **** 	VD9_ON;
+ 644              		.loc 1 128 0
+ 645 0080 4FF40053 		mov	r3, #8192
+ 646 0084 C8F20103 		movt	r3, 32769
+ 647 0088 D3F80029 		ldr	r2, [r3, #2304]
+ 648 008c 6FF30F22 		bfc	r2, #8, #8
+ 649 0090 C3F80029 		str	r2, [r3, #2304]
+ 129:../src/main.c **** 	VD8_ON;
+ 650              		.loc 1 129 0
+ 651 0094 4FF40053 		mov	r3, #8192
+ 652 0098 C8F20103 		movt	r3, 32769
+ 653 009c D3F88028 		ldr	r2, [r3, #2176]
+ 654 00a0 6FF30F22 		bfc	r2, #8, #8
+ 655 00a4 C3F88028 		str	r2, [r3, #2176]
+ 130:../src/main.c **** }
+ 656              		.loc 1 130 0
+ 657 00a8 80BD     		pop	{r7, pc}
+ 658              		.cfi_endproc
+ 659              	.LFE115:
+ 661 00aa 00BF     		.section	.text.LedBlink,"ax",%progbits
+ 662              		.align	2
+ 663              		.global	LedBlink
+ 664              		.thumb
+ 665              		.thumb_func
+ 667              	LedBlink:
+ 668              	.LFB116:
+ 131:../src/main.c **** //Мигание светодиодами
+ 132:../src/main.c **** void LedBlink() {
+ 669              		.loc 1 132 0
+ 670              		.cfi_startproc
+ 671              		@ args = 0, pretend = 0, frame = 0
+ 672              		@ frame_needed = 1, uses_anonymous_args = 0
+ 673 0000 80B5     		push	{r7, lr}
+ 674              		.cfi_def_cfa_offset 8
+ 675              		.cfi_offset 7, -8
+ 676              		.cfi_offset 14, -4
+ 677 0002 00AF     		add	r7, sp, #0
+ 678              		.cfi_def_cfa_register 7
+ 133:../src/main.c **** 	if ((result > 4.375) &(result < 5.0)) {
+ 679              		.loc 1 133 0
+ 680 0004 40F20003 		movw	r3, #:lower16:result
+ 681 0008 C0F20003 		movt	r3, #:upper16:result
+ 682 000c 93ED007A 		flds	s14, [r3]
+ 683 0010 DFEDB97A 		flds	s15, .L17
+ 684 0014 B4EEE77A 		fcmpes	s14, s15
+ 685 0018 F1EE10FA 		fmstat
+ 686 001c D4BF     		ite	le
+ 687 001e 0023     		movle	r3, #0
+ 688 0020 0123     		movgt	r3, #1
+ 689 0022 DAB2     		uxtb	r2, r3
+ 690 0024 40F20003 		movw	r3, #:lower16:result
+ 691 0028 C0F20003 		movt	r3, #:upper16:result
+ 692 002c 93ED007A 		flds	s14, [r3]
+ 693 0030 F1EE047A 		fconsts	s15, #20
+ 694 0034 B4EEE77A 		fcmpes	s14, s15
+ 695 0038 F1EE10FA 		fmstat
+ 696 003c 54BF     		ite	pl
+ 697 003e 0023     		movpl	r3, #0
+ 698 0040 0123     		movmi	r3, #1
+ 699 0042 DBB2     		uxtb	r3, r3
+ 700 0044 1340     		ands	r3, r3, r2
+ 701 0046 DBB2     		uxtb	r3, r3
+ 702 0048 002B     		cmp	r3, #0
+ 703 004a 0CD0     		beq	.L9
+ 134:../src/main.c **** 		VD16_OFF;
+ 704              		.loc 1 134 0
+ 705 004c 4FF48043 		mov	r3, #16384
+ 706 0050 C8F20103 		movt	r3, 32769
+ 707 0054 D3F82024 		ldr	r2, [r3, #1056]
+ 708 0058 0821     		movs	r1, #8
+ 709 005a 61F30702 		bfi	r2, r1, #0, #8
+ 710 005e C3F82024 		str	r2, [r3, #1056]
+ 135:../src/main.c **** 		delay();
+ 711              		.loc 1 135 0
+ 712 0062 FFF7FEFF 		bl	delay
+ 713              	.L9:
+ 136:../src/main.c **** 	}
+ 137:../src/main.c **** 	if ((result > 3.75) &(result < 4.375)) {
+ 714              		.loc 1 137 0
+ 715 0066 40F20003 		movw	r3, #:lower16:result
+ 716 006a C0F20003 		movt	r3, #:upper16:result
+ 717 006e 93ED007A 		flds	s14, [r3]
+ 718 0072 F0EE0E7A 		fconsts	s15, #14
+ 719 0076 B4EEE77A 		fcmpes	s14, s15
+ 720 007a F1EE10FA 		fmstat
+ 721 007e D4BF     		ite	le
+ 722 0080 0023     		movle	r3, #0
+ 723 0082 0123     		movgt	r3, #1
+ 724 0084 DAB2     		uxtb	r2, r3
+ 725 0086 40F20003 		movw	r3, #:lower16:result
+ 726 008a C0F20003 		movt	r3, #:upper16:result
+ 727 008e 93ED007A 		flds	s14, [r3]
+ 728 0092 DFED997A 		flds	s15, .L17
+ 729 0096 B4EEE77A 		fcmpes	s14, s15
+ 730 009a F1EE10FA 		fmstat
+ 731 009e 54BF     		ite	pl
+ 732 00a0 0023     		movpl	r3, #0
+ 733 00a2 0123     		movmi	r3, #1
+ 734 00a4 DBB2     		uxtb	r3, r3
+ 735 00a6 1340     		ands	r3, r3, r2
+ 736 00a8 DBB2     		uxtb	r3, r3
+ 737 00aa 002B     		cmp	r3, #0
+ 738 00ac 0AD0     		beq	.L10
+ 138:../src/main.c **** 		VD15_OFF;
+ 739              		.loc 1 138 0
+ 740 00ae 4FF48043 		mov	r3, #16384
+ 741 00b2 C8F20103 		movt	r3, 32769
+ 742 00b6 D3F81024 		ldr	r2, [r3, #1040]
+ 743 00ba 0421     		movs	r1, #4
+ 744 00bc 61F30702 		bfi	r2, r1, #0, #8
+ 745 00c0 C3F81024 		str	r2, [r3, #1040]
+ 746              	.L10:
+ 139:../src/main.c **** 	}
+ 140:../src/main.c **** 	if ((result > 3.125) &(result < 3.75)) {
+ 747              		.loc 1 140 0
+ 748 00c4 40F20003 		movw	r3, #:lower16:result
+ 749 00c8 C0F20003 		movt	r3, #:upper16:result
+ 750 00cc 93ED007A 		flds	s14, [r3]
+ 751 00d0 F0EE097A 		fconsts	s15, #9
+ 752 00d4 B4EEE77A 		fcmpes	s14, s15
+ 753 00d8 F1EE10FA 		fmstat
+ 754 00dc D4BF     		ite	le
+ 755 00de 0023     		movle	r3, #0
+ 756 00e0 0123     		movgt	r3, #1
+ 757 00e2 DAB2     		uxtb	r2, r3
+ 758 00e4 40F20003 		movw	r3, #:lower16:result
+ 759 00e8 C0F20003 		movt	r3, #:upper16:result
+ 760 00ec 93ED007A 		flds	s14, [r3]
+ 761 00f0 F0EE0E7A 		fconsts	s15, #14
+ 762 00f4 B4EEE77A 		fcmpes	s14, s15
+ 763 00f8 F1EE10FA 		fmstat
+ 764 00fc 54BF     		ite	pl
+ 765 00fe 0023     		movpl	r3, #0
+ 766 0100 0123     		movmi	r3, #1
+ 767 0102 DBB2     		uxtb	r3, r3
+ 768 0104 1340     		ands	r3, r3, r2
+ 769 0106 DBB2     		uxtb	r3, r3
+ 770 0108 002B     		cmp	r3, #0
+ 771 010a 0AD0     		beq	.L11
+ 141:../src/main.c **** 		VD14_OFF;
+ 772              		.loc 1 141 0
+ 773 010c 4FF44053 		mov	r3, #12288
+ 774 0110 C8F20103 		movt	r3, 32769
+ 775 0114 D3F8002A 		ldr	r2, [r3, #2560]
+ 776 0118 8021     		movs	r1, #128
+ 777 011a 61F30F22 		bfi	r2, r1, #8, #8
+ 778 011e C3F8002A 		str	r2, [r3, #2560]
+ 779              	.L11:
+ 142:../src/main.c **** 	}
+ 143:../src/main.c **** 	if ((result > 2.5) &(result < 3.125)) {
+ 780              		.loc 1 143 0
+ 781 0122 40F20003 		movw	r3, #:lower16:result
+ 782 0126 C0F20003 		movt	r3, #:upper16:result
+ 783 012a 93ED007A 		flds	s14, [r3]
+ 784 012e F0EE047A 		fconsts	s15, #4
+ 785 0132 B4EEE77A 		fcmpes	s14, s15
+ 786 0136 F1EE10FA 		fmstat
+ 787 013a D4BF     		ite	le
+ 788 013c 0023     		movle	r3, #0
+ 789 013e 0123     		movgt	r3, #1
+ 790 0140 DAB2     		uxtb	r2, r3
+ 791 0142 40F20003 		movw	r3, #:lower16:result
+ 792 0146 C0F20003 		movt	r3, #:upper16:result
+ 793 014a 93ED007A 		flds	s14, [r3]
+ 794 014e F0EE097A 		fconsts	s15, #9
+ 795 0152 B4EEE77A 		fcmpes	s14, s15
+ 796 0156 F1EE10FA 		fmstat
+ 797 015a 54BF     		ite	pl
+ 798 015c 0023     		movpl	r3, #0
+ 799 015e 0123     		movmi	r3, #1
+ 800 0160 DBB2     		uxtb	r3, r3
+ 801 0162 1340     		ands	r3, r3, r2
+ 802 0164 DBB2     		uxtb	r3, r3
+ 803 0166 002B     		cmp	r3, #0
+ 804 0168 0AD0     		beq	.L12
+ 144:../src/main.c **** 		VD13_OFF;
+ 805              		.loc 1 144 0
+ 806 016a 4FF44053 		mov	r3, #12288
+ 807 016e C8F20103 		movt	r3, 32769
+ 808 0172 D3F80029 		ldr	r2, [r3, #2304]
+ 809 0176 4021     		movs	r1, #64
+ 810 0178 61F30F22 		bfi	r2, r1, #8, #8
+ 811 017c C3F80029 		str	r2, [r3, #2304]
+ 812              	.L12:
+ 145:../src/main.c **** 	}
+ 146:../src/main.c **** 	if ((result > 1.875) &(result < 2.5)) {
+ 813              		.loc 1 146 0
+ 814 0180 40F20003 		movw	r3, #:lower16:result
+ 815 0184 C0F20003 		movt	r3, #:upper16:result
+ 816 0188 93ED007A 		flds	s14, [r3]
+ 817 018c F7EE0E7A 		fconsts	s15, #126
+ 818 0190 B4EEE77A 		fcmpes	s14, s15
+ 819 0194 F1EE10FA 		fmstat
+ 820 0198 D4BF     		ite	le
+ 821 019a 0023     		movle	r3, #0
+ 822 019c 0123     		movgt	r3, #1
+ 823 019e DAB2     		uxtb	r2, r3
+ 824 01a0 40F20003 		movw	r3, #:lower16:result
+ 825 01a4 C0F20003 		movt	r3, #:upper16:result
+ 826 01a8 93ED007A 		flds	s14, [r3]
+ 827 01ac F0EE047A 		fconsts	s15, #4
+ 828 01b0 B4EEE77A 		fcmpes	s14, s15
+ 829 01b4 F1EE10FA 		fmstat
+ 830 01b8 54BF     		ite	pl
+ 831 01ba 0023     		movpl	r3, #0
+ 832 01bc 0123     		movmi	r3, #1
+ 833 01be DBB2     		uxtb	r3, r3
+ 834 01c0 1340     		ands	r3, r3, r2
+ 835 01c2 DBB2     		uxtb	r3, r3
+ 836 01c4 002B     		cmp	r3, #0
+ 837 01c6 0AD0     		beq	.L13
+ 147:../src/main.c **** 		VD11_OFF;
+ 838              		.loc 1 147 0
+ 839 01c8 4FF44053 		mov	r3, #12288
+ 840 01cc C8F20103 		movt	r3, 32769
+ 841 01d0 D3F88028 		ldr	r2, [r3, #2176]
+ 842 01d4 2021     		movs	r1, #32
+ 843 01d6 61F30F22 		bfi	r2, r1, #8, #8
+ 844 01da C3F88028 		str	r2, [r3, #2176]
+ 845              	.L13:
+ 148:../src/main.c **** 	}
+ 149:../src/main.c **** 	if ((result > 1.25) &(result < 1.875)) {
+ 846              		.loc 1 149 0
+ 847 01de 40F20003 		movw	r3, #:lower16:result
+ 848 01e2 C0F20003 		movt	r3, #:upper16:result
+ 849 01e6 93ED007A 		flds	s14, [r3]
+ 850 01ea F7EE047A 		fconsts	s15, #116
+ 851 01ee B4EEE77A 		fcmpes	s14, s15
+ 852 01f2 F1EE10FA 		fmstat
+ 853 01f6 D4BF     		ite	le
+ 854 01f8 0023     		movle	r3, #0
+ 855 01fa 0123     		movgt	r3, #1
+ 856 01fc DAB2     		uxtb	r2, r3
+ 857 01fe 40F20003 		movw	r3, #:lower16:result
+ 858 0202 C0F20003 		movt	r3, #:upper16:result
+ 859 0206 93ED007A 		flds	s14, [r3]
+ 860 020a F7EE0E7A 		fconsts	s15, #126
+ 861 020e B4EEE77A 		fcmpes	s14, s15
+ 862 0212 F1EE10FA 		fmstat
+ 863 0216 54BF     		ite	pl
+ 864 0218 0023     		movpl	r3, #0
+ 865 021a 0123     		movmi	r3, #1
+ 866 021c DBB2     		uxtb	r3, r3
+ 867 021e 1340     		ands	r3, r3, r2
+ 868 0220 DBB2     		uxtb	r3, r3
+ 869 0222 002B     		cmp	r3, #0
+ 870 0224 0AD0     		beq	.L14
+ 150:../src/main.c **** 		VD10_OFF;
+ 871              		.loc 1 150 0
+ 872 0226 4FF40053 		mov	r3, #8192
+ 873 022a C8F20103 		movt	r3, 32769
+ 874 022e D3F8002A 		ldr	r2, [r3, #2560]
+ 875 0232 8021     		movs	r1, #128
+ 876 0234 61F30F22 		bfi	r2, r1, #8, #8
+ 877 0238 C3F8002A 		str	r2, [r3, #2560]
+ 878              	.L14:
+ 151:../src/main.c **** 	}
+ 152:../src/main.c **** 	if ((result > 0.625) &(result < 1.25)) {
+ 879              		.loc 1 152 0
+ 880 023c 40F20003 		movw	r3, #:lower16:result
+ 881 0240 C0F20003 		movt	r3, #:upper16:result
+ 882 0244 93ED007A 		flds	s14, [r3]
+ 883 0248 F6EE047A 		fconsts	s15, #100
+ 884 024c B4EEE77A 		fcmpes	s14, s15
+ 885 0250 F1EE10FA 		fmstat
+ 886 0254 D4BF     		ite	le
+ 887 0256 0023     		movle	r3, #0
+ 888 0258 0123     		movgt	r3, #1
+ 889 025a DAB2     		uxtb	r2, r3
+ 890 025c 40F20003 		movw	r3, #:lower16:result
+ 891 0260 C0F20003 		movt	r3, #:upper16:result
+ 892 0264 93ED007A 		flds	s14, [r3]
+ 893 0268 F7EE047A 		fconsts	s15, #116
+ 894 026c B4EEE77A 		fcmpes	s14, s15
+ 895 0270 F1EE10FA 		fmstat
+ 896 0274 54BF     		ite	pl
+ 897 0276 0023     		movpl	r3, #0
+ 898 0278 0123     		movmi	r3, #1
+ 899 027a DBB2     		uxtb	r3, r3
+ 900 027c 1340     		ands	r3, r3, r2
+ 901 027e DBB2     		uxtb	r3, r3
+ 902 0280 002B     		cmp	r3, #0
+ 903 0282 0AD0     		beq	.L15
+ 153:../src/main.c **** 		VD9_OFF;
+ 904              		.loc 1 153 0
+ 905 0284 4FF40053 		mov	r3, #8192
+ 906 0288 C8F20103 		movt	r3, 32769
+ 907 028c D3F80029 		ldr	r2, [r3, #2304]
+ 908 0290 4021     		movs	r1, #64
+ 909 0292 61F30F22 		bfi	r2, r1, #8, #8
+ 910 0296 C3F80029 		str	r2, [r3, #2304]
+ 911              	.L15:
+ 154:../src/main.c **** 	}
+ 155:../src/main.c **** 	if ((result >= 0) &(result < 0.625)) {
+ 912              		.loc 1 155 0
+ 913 029a 40F20003 		movw	r3, #:lower16:result
+ 914 029e C0F20003 		movt	r3, #:upper16:result
+ 915 02a2 D3ED007A 		flds	s15, [r3]
+ 916 02a6 F5EEC07A 		fcmpezs	s15
+ 917 02aa F1EE10FA 		fmstat
+ 918 02ae B4BF     		ite	lt
+ 919 02b0 0023     		movlt	r3, #0
+ 920 02b2 0123     		movge	r3, #1
+ 921 02b4 DAB2     		uxtb	r2, r3
+ 922 02b6 40F20003 		movw	r3, #:lower16:result
+ 923 02ba C0F20003 		movt	r3, #:upper16:result
+ 924 02be 93ED007A 		flds	s14, [r3]
+ 925 02c2 F6EE047A 		fconsts	s15, #100
+ 926 02c6 B4EEE77A 		fcmpes	s14, s15
+ 927 02ca F1EE10FA 		fmstat
+ 928 02ce 54BF     		ite	pl
+ 929 02d0 0023     		movpl	r3, #0
+ 930 02d2 0123     		movmi	r3, #1
+ 931 02d4 DBB2     		uxtb	r3, r3
+ 932 02d6 1340     		ands	r3, r3, r2
+ 933 02d8 DBB2     		uxtb	r3, r3
+ 934 02da 002B     		cmp	r3, #0
+ 935 02dc 0AD0     		beq	.L8
+ 156:../src/main.c **** 		VD8_OFF;
+ 936              		.loc 1 156 0
+ 937 02de 4FF40053 		mov	r3, #8192
+ 938 02e2 C8F20103 		movt	r3, 32769
+ 939 02e6 D3F88028 		ldr	r2, [r3, #2176]
+ 940 02ea 2021     		movs	r1, #32
+ 941 02ec 61F30F22 		bfi	r2, r1, #8, #8
+ 942 02f0 C3F88028 		str	r2, [r3, #2176]
+ 943              	.L8:
+ 157:../src/main.c **** 	}
+ 158:../src/main.c **** }
+ 944              		.loc 1 158 0
+ 945 02f4 80BD     		pop	{r7, pc}
+ 946              	.L18:
+ 947 02f6 00BF     		.align	2
+ 948              	.L17:
+ 949 02f8 00008C40 		.word	1082916864
+ 950              		.cfi_endproc
+ 951              	.LFE116:
+ 953              		.global	__aeabi_i2d
+ 954              		.global	__aeabi_ddiv
+ 955              		.global	__aeabi_d2f
+ 956              		.section	.text.ReadData,"ax",%progbits
+ 957              		.align	2
+ 958              		.global	ReadData
+ 959              		.thumb
+ 960              		.thumb_func
+ 962              	ReadData:
+ 963              	.LFB117:
+ 159:../src/main.c **** // Чтение данных с АЦП
+ 160:../src/main.c **** void ReadData() {
+ 964              		.loc 1 160 0
+ 965              		.cfi_startproc
+ 966              		@ args = 0, pretend = 0, frame = 0
+ 967              		@ frame_needed = 1, uses_anonymous_args = 0
+ 968 0000 80B5     		push	{r7, lr}
+ 969              		.cfi_def_cfa_offset 8
+ 970              		.cfi_offset 7, -8
+ 971              		.cfi_offset 14, -4
+ 972 0002 00AF     		add	r7, sp, #0
+ 973              		.cfi_def_cfa_register 7
+ 974              	.L23:
+ 161:../src/main.c **** 	while(1) {
+ 162:../src/main.c **** 		busy = NT_GPIOA->DATA &(1<<12);
+ 975              		.loc 1 162 0
+ 976 0004 0023     		movs	r3, #0
+ 977 0006 C8F20103 		movt	r3, 32769
+ 978 000a 1B68     		ldr	r3, [r3]
+ 979 000c 03F48053 		and	r3, r3, #4096
+ 980 0010 002B     		cmp	r3, #0
+ 981 0012 0CBF     		ite	eq
+ 982 0014 0023     		moveq	r3, #0
+ 983 0016 0123     		movne	r3, #1
+ 984 0018 DAB2     		uxtb	r2, r3
+ 985 001a 40F20003 		movw	r3, #:lower16:busy
+ 986 001e C0F20003 		movt	r3, #:upper16:busy
+ 987 0022 1A70     		strb	r2, [r3]
+ 163:../src/main.c **** 		if (busy == false) {
+ 988              		.loc 1 163 0
+ 989 0024 40F20003 		movw	r3, #:lower16:busy
+ 990 0028 C0F20003 		movt	r3, #:upper16:busy
+ 991 002c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 992 002e 83F00103 		eor	r3, r3, #1
+ 993 0032 DBB2     		uxtb	r3, r3
+ 994 0034 002B     		cmp	r3, #0
+ 995 0036 75D0     		beq	.L20
+ 164:../src/main.c **** 			PB13_OFF;
+ 996              		.loc 1 164 0
+ 997 0038 4FF48053 		mov	r3, #4096
+ 998 003c C8F20103 		movt	r3, 32769
+ 999 0040 D3F88028 		ldr	r2, [r3, #2176]
+ 1000 0044 6FF30F22 		bfc	r2, #8, #8
+ 1001 0048 C3F88028 		str	r2, [r3, #2176]
+ 165:../src/main.c **** 			NT_SPI2->SPI_DR_bit.DATA = 0x3ff;
+ 1002              		.loc 1 165 0
+ 1003 004c 0023     		movs	r3, #0
+ 1004 004e CAF20203 		movt	r3, 40962
+ 1005 0052 9A68     		ldr	r2, [r3, #8]
+ 1006 0054 40F2FF31 		movw	r1, #1023
+ 1007 0058 61F30F02 		bfi	r2, r1, #0, #16
+ 1008 005c 9A60     		str	r2, [r3, #8]
+ 166:../src/main.c **** 			report = NT_SPI2->SPI_DR_bit.DATA;
+ 1009              		.loc 1 166 0
+ 1010 005e 0023     		movs	r3, #0
+ 1011 0060 CAF20203 		movt	r3, 40962
+ 1012 0064 9B68     		ldr	r3, [r3, #8]
+ 1013 0066 9AB2     		uxth	r2, r3
+ 1014 0068 40F20003 		movw	r3, #:lower16:report
+ 1015 006c C0F20003 		movt	r3, #:upper16:report
+ 1016 0070 1A80     		strh	r2, [r3]	@ movhi
+ 167:../src/main.c **** 			if (report > 0) {
+ 1017              		.loc 1 167 0
+ 1018 0072 40F20003 		movw	r3, #:lower16:report
+ 1019 0076 C0F20003 		movt	r3, #:upper16:report
+ 1020 007a 1B88     		ldrh	r3, [r3]
+ 1021 007c 002B     		cmp	r3, #0
+ 1022 007e 45D0     		beq	.L21
+ 168:../src/main.c **** 				report = report << 2;
+ 1023              		.loc 1 168 0
+ 1024 0080 40F20003 		movw	r3, #:lower16:report
+ 1025 0084 C0F20003 		movt	r3, #:upper16:report
+ 1026 0088 1B88     		ldrh	r3, [r3]
+ 1027 008a 9B00     		lsls	r3, r3, #2
+ 1028 008c 9AB2     		uxth	r2, r3
+ 1029 008e 40F20003 		movw	r3, #:lower16:report
+ 1030 0092 C0F20003 		movt	r3, #:upper16:report
+ 1031 0096 1A80     		strh	r2, [r3]	@ movhi
+ 169:../src/main.c **** 				res = (signed short)report;
+ 1032              		.loc 1 169 0
+ 1033 0098 40F20003 		movw	r3, #:lower16:report
+ 1034 009c C0F20003 		movt	r3, #:upper16:report
+ 1035 00a0 1B88     		ldrh	r3, [r3]
+ 1036 00a2 9AB2     		uxth	r2, r3
+ 1037 00a4 40F20003 		movw	r3, #:lower16:res
+ 1038 00a8 C0F20003 		movt	r3, #:upper16:res
+ 1039 00ac 1A80     		strh	r2, [r3]	@ movhi
+ 170:../src/main.c **** 				res = res >> 2;
+ 1040              		.loc 1 170 0
+ 1041 00ae 40F20003 		movw	r3, #:lower16:res
+ 1042 00b2 C0F20003 		movt	r3, #:upper16:res
+ 1043 00b6 1B88     		ldrh	r3, [r3]
+ 1044 00b8 1BB2     		sxth	r3, r3
+ 1045 00ba 9B10     		asrs	r3, r3, #2
+ 1046 00bc 9AB2     		uxth	r2, r3
+ 1047 00be 40F20003 		movw	r3, #:lower16:res
+ 1048 00c2 C0F20003 		movt	r3, #:upper16:res
+ 1049 00c6 1A80     		strh	r2, [r3]	@ movhi
+ 171:../src/main.c **** 				result = res / CONST_ADC;
+ 1050              		.loc 1 171 0
+ 1051 00c8 40F20003 		movw	r3, #:lower16:res
+ 1052 00cc C0F20003 		movt	r3, #:upper16:res
+ 1053 00d0 1B88     		ldrh	r3, [r3]
+ 1054 00d2 1BB2     		sxth	r3, r3
+ 1055 00d4 1846     		mov	r0, r3
+ 1056 00d6 FFF7FEFF 		bl	__aeabi_i2d
+ 1057 00da 0246     		mov	r2, r0
+ 1058 00dc 0B46     		mov	r3, r1
+ 1059 00de 1046     		mov	r0, r2
+ 1060 00e0 1946     		mov	r1, r3
+ 1061 00e2 11A3     		adr	r3, .L25
+ 1062 00e4 D3E90023 		ldrd	r2, [r3]
+ 1063 00e8 FFF7FEFF 		bl	__aeabi_ddiv
+ 1064 00ec 0246     		mov	r2, r0
+ 1065 00ee 0B46     		mov	r3, r1
+ 1066 00f0 1046     		mov	r0, r2
+ 1067 00f2 1946     		mov	r1, r3
+ 1068 00f4 FFF7FEFF 		bl	__aeabi_d2f
+ 1069 00f8 0246     		mov	r2, r0	@ float
+ 1070 00fa 40F20003 		movw	r3, #:lower16:result
+ 1071 00fe C0F20003 		movt	r3, #:upper16:result
+ 1072 0102 1A60     		str	r2, [r3]	@ float
+ 172:../src/main.c **** 				ResetLED();
+ 1073              		.loc 1 172 0
+ 1074 0104 FFF7FEFF 		bl	ResetLED
+ 173:../src/main.c **** 				LedBlink();
+ 1075              		.loc 1 173 0
+ 1076 0108 FFF7FEFF 		bl	LedBlink
+ 1077              	.L21:
+ 174:../src/main.c **** 			}
+ 175:../src/main.c **** 			PB13_ON;
+ 1078              		.loc 1 175 0
+ 1079 010c 4FF48053 		mov	r3, #4096
+ 1080 0110 C8F20103 		movt	r3, 32769
+ 1081 0114 D3F88028 		ldr	r2, [r3, #2176]
+ 1082 0118 2021     		movs	r1, #32
+ 1083 011a 61F30F22 		bfi	r2, r1, #8, #8
+ 1084 011e C3F88028 		str	r2, [r3, #2176]
+ 176:../src/main.c **** 			break;
+ 1085              		.loc 1 176 0
+ 1086 0122 00E0     		b	.L24
+ 1087              	.L20:
+ 177:../src/main.c **** 		}
+ 178:../src/main.c **** 	}
+ 1088              		.loc 1 178 0
+ 1089 0124 6EE7     		b	.L23
+ 1090              	.L24:
+ 179:../src/main.c **** }
+ 1091              		.loc 1 179 0
+ 1092 0126 80BD     		pop	{r7, pc}
+ 1093              	.L26:
+ 1094              		.align	3
+ 1095              	.L25:
+ 1096 0128 9A999999 		.word	-1717986918
+ 1097 012c 99999940 		.word	1083808153
+ 1098              		.cfi_endproc
+ 1099              	.LFE117:
+ 1101              		.section	.text.ExchangeADC,"ax",%progbits
+ 1102              		.align	2
+ 1103              		.global	ExchangeADC
+ 1104              		.thumb
+ 1105              		.thumb_func
+ 1107              	ExchangeADC:
+ 1108              	.LFB118:
+ 180:../src/main.c **** // Процесс обмена с АЦП
+ 181:../src/main.c **** void ExchangeADC() {
+ 1109              		.loc 1 181 0
+ 1110              		.cfi_startproc
+ 1111              		@ args = 0, pretend = 0, frame = 0
+ 1112              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1113 0000 80B5     		push	{r7, lr}
+ 1114              		.cfi_def_cfa_offset 8
+ 1115              		.cfi_offset 7, -8
+ 1116              		.cfi_offset 14, -4
+ 1117 0002 00AF     		add	r7, sp, #0
+ 1118              		.cfi_def_cfa_register 7
+ 182:../src/main.c **** ResetConvstAB();
+ 1119              		.loc 1 182 0
+ 1120 0004 FFF7FEFF 		bl	ResetConvstAB
+ 1121              	.L30:
+ 183:../src/main.c **** while (1) {
+ 184:../src/main.c **** 	busy = NT_GPIOA->DATA &(1<<12);
+ 1122              		.loc 1 184 0
+ 1123 0008 0023     		movs	r3, #0
+ 1124 000a C8F20103 		movt	r3, 32769
+ 1125 000e 1B68     		ldr	r3, [r3]
+ 1126 0010 03F48053 		and	r3, r3, #4096
+ 1127 0014 002B     		cmp	r3, #0
+ 1128 0016 0CBF     		ite	eq
+ 1129 0018 0023     		moveq	r3, #0
+ 1130 001a 0123     		movne	r3, #1
+ 1131 001c DAB2     		uxtb	r2, r3
+ 1132 001e 40F20003 		movw	r3, #:lower16:busy
+ 1133 0022 C0F20003 		movt	r3, #:upper16:busy
+ 1134 0026 1A70     		strb	r2, [r3]
+ 185:../src/main.c **** 	if (busy == true) {
+ 1135              		.loc 1 185 0
+ 1136 0028 40F20003 		movw	r3, #:lower16:busy
+ 1137 002c C0F20003 		movt	r3, #:upper16:busy
+ 1138 0030 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1139 0032 002B     		cmp	r3, #0
+ 1140 0034 02D0     		beq	.L28
+ 186:../src/main.c **** 		ReadData();
+ 1141              		.loc 1 186 0
+ 1142 0036 FFF7FEFF 		bl	ReadData
+ 187:../src/main.c **** 		break;
+ 1143              		.loc 1 187 0
+ 1144 003a 00E0     		b	.L31
+ 1145              	.L28:
+ 188:../src/main.c **** 	}
+ 189:../src/main.c **** 	}
+ 1146              		.loc 1 189 0
+ 1147 003c E4E7     		b	.L30
+ 1148              	.L31:
+ 190:../src/main.c **** }
+ 1149              		.loc 1 190 0
+ 1150 003e 80BD     		pop	{r7, pc}
+ 1151              		.cfi_endproc
+ 1152              	.LFE118:
+ 1154              		.section	.text.main,"ax",%progbits
+ 1155              		.align	2
+ 1156              		.global	main
+ 1157              		.thumb
+ 1158              		.thumb_func
+ 1160              	main:
+ 1161              	.LFB119:
+ 191:../src/main.c **** 
+ 192:../src/main.c **** int16 main (void) {
+ 1162              		.loc 1 192 0
+ 1163              		.cfi_startproc
+ 1164              		@ args = 0, pretend = 0, frame = 0
+ 1165              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1166 0000 80B5     		push	{r7, lr}
+ 1167              		.cfi_def_cfa_offset 8
+ 1168              		.cfi_offset 7, -8
+ 1169              		.cfi_offset 14, -4
+ 1170 0002 00AF     		add	r7, sp, #0
+ 1171              		.cfi_def_cfa_register 7
+ 193:../src/main.c **** //Инициализация микроконтроллера
+ 194:../src/main.c **** 	InitCLK();
+ 1172              		.loc 1 194 0
+ 1173 0004 FFF7FEFF 		bl	InitCLK
+ 195:../src/main.c **** //Инициализация периферии
+ 196:../src/main.c **** 	LED_init();
+ 1174              		.loc 1 196 0
+ 1175 0008 FFF7FEFF 		bl	LED_init
+ 197:../src/main.c **** 	ResetADC();
+ 1176              		.loc 1 197 0
+ 1177 000c FFF7FEFF 		bl	ResetADC
+ 1178              	.L33:
+ 198:../src/main.c **** 	while(1) {
+ 199:../src/main.c **** 		ExchangeADC();
+ 1179              		.loc 1 199 0 discriminator 1
+ 1180 0010 FFF7FEFF 		bl	ExchangeADC
+ 200:../src/main.c **** 	}
+ 1181              		.loc 1 200 0 discriminator 1
+ 1182 0014 FCE7     		b	.L33
+ 1183              		.cfi_endproc
+ 1184              	.LFE119:
+ 1186 0016 00BF     		.text
+ 1187              	.Letext0:
+ 1188              		.file 2 "d:\\vector\\vectoride\\codebench\\arm-none-eabi\\include\\stdint.h"
+ 1189              		.file 3 "D:\\Worcspace\\VectorIDE_Examples\\Example_LED_blinking\\include/K1921BK01T.h"
+ 1190              		.file 4 "D:\\Worcspace\\VectorIDE_Examples\\Example_LED_blinking\\include/DSP.h"
+ 1191              		.file 5 "D:\\Worcspace\\VectorIDE_Examples\\Example_LED_blinking\\include/core_cm4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:25     .data.TimerPeriod:00000000 TimerPeriod
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:22     .data.TimerPeriod:00000000 $d
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:28     .text.LED_init:00000000 $t
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:33     .text.LED_init:00000000 LED_init
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:436    .bss.i:00000000 i
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:433    .bss.i:00000000 $d
+                            *COM*:00000001 busy
+                            *COM*:00000002 report
+                            *COM*:00000002 res
+                            *COM*:00000004 result
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:443    .text.delay:00000000 $t
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:448    .text.delay:00000000 delay
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:493    .text.ResetConvstAB:00000000 $t
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:498    .text.ResetConvstAB:00000000 ResetConvstAB
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:539    .text.ResetADC:00000000 $t
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:544    .text.ResetADC:00000000 ResetADC
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:589    .text.ResetLED:00000000 $t
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:594    .text.ResetLED:00000000 ResetLED
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:662    .text.LedBlink:00000000 $t
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:667    .text.LedBlink:00000000 LedBlink
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:949    .text.LedBlink:000002f8 $d
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:957    .text.ReadData:00000000 $t
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:962    .text.ReadData:00000000 ReadData
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:1096   .text.ReadData:00000128 $d
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:1102   .text.ExchangeADC:00000000 $t
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:1107   .text.ExchangeADC:00000000 ExchangeADC
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:1155   .text.main:00000000 $t
+C:\Users\E786~1\AppData\Local\Temp\ccr0rw8x.s:1160   .text.main:00000000 main
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.275fe677ac8f53c8226ddbef40ce31e9
+                           .group:00000000 wm4.DSP.h.23.611bad0b8a00e7fe39a9694358e6c103
+                           .group:00000000 wm4.newlib.h.8.384a112feabb3bef7b573ae48cde2e3b
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4.config.h.183.aa62afef667fb61d15fa64c48beb2f14
+                           .group:00000000 wm4._ansi.h.23.2147fde150631f5584b9dc29b914d1b8
+                           .group:00000000 wm4.stdint.h.20.54ad762faa59e3c05491630641c8d8bf
+                           .group:00000000 wm4.K1921BK01T.h.30.c4e3103d62bd338f6319b0614b42d696
+                           .group:00000000 wm4.core_cm4.h.32.6924bf290c61b6d13bd0b16a908fc262
+                           .group:00000000 wm4.core_cmInstr.h.25.d8165482ef3061013a2fc83e2d85f3d9
+                           .group:00000000 wm4.core_cm4_simd.h.29.013e5bcf58dba2d27c60184174208e07
+                           .group:00000000 wm4.core_cm4.h.163.9c946ce8d627386e989c472b2056643f
+                           .group:00000000 wm4.DSP.h.60.b4208c1bfa511913aebc0abf00a1a0c7
+                           .group:00000000 wm4.stdbool.h.26.55fb797665c7c22921f5b2597d7377e6
+
+UNDEFINED SYMBOLS
+__aeabi_i2d
+__aeabi_ddiv
+__aeabi_d2f
+InitCLK

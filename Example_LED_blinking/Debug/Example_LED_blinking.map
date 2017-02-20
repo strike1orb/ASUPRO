@@ -1,0 +1,485 @@
+Archive member included to satisfy reference by file (symbol)
+
+D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_addsubdf3.o)
+                              ./src/main.o (__aeabi_i2d)
+D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_muldivdf3.o)
+                              ./src/main.o (__aeabi_ddiv)
+D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_truncdfsf2.o)
+                              ./src/main.o (__aeabi_d2f)
+
+Allocating common symbols
+Common symbol       size              file
+
+busy                0x1               ./src/main.o
+result              0x4               ./src/main.o
+report              0x2               ./src/main.o
+res                 0x2               ./src/main.o
+
+Discarded input sections
+
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/K1921VK01T_init.o
+ .text          0x00000000        0x0 ./src/K1921VK01T_init.o
+ .data          0x00000000        0x0 ./src/K1921VK01T_init.o
+ .bss           0x00000000        0x0 ./src/K1921VK01T_init.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .group         0x00000000        0x8 ./src/main.o
+ .text          0x00000000        0x0 ./src/main.o
+ .data          0x00000000        0x0 ./src/main.o
+ .bss           0x00000000        0x0 ./src/main.o
+ .data.TimerPeriod
+                0x00000000        0x4 ./src/main.o
+ .debug_macro   0x00000000      0x868 ./src/main.o
+ .debug_macro   0x00000000       0x1c ./src/main.o
+ .debug_macro   0x00000000       0x52 ./src/main.o
+ .debug_macro   0x00000000       0x16 ./src/main.o
+ .debug_macro   0x00000000       0x35 ./src/main.o
+ .debug_macro   0x00000000       0xa3 ./src/main.o
+ .debug_macro   0x00000000      0x20e ./src/main.o
+ .debug_macro   0x00000000     0x6ec0 ./src/main.o
+ .debug_macro   0x00000000       0x3b ./src/main.o
+ .debug_macro   0x00000000       0x18 ./src/main.o
+ .debug_macro   0x00000000       0x42 ./src/main.o
+ .debug_macro   0x00000000      0xab5 ./src/main.o
+ .debug_macro   0x00000000       0x34 ./src/main.o
+ .text          0x00000000       0x14 ./asm/startup_MCP_gcc.o
+ .data          0x00000000        0x0 ./asm/startup_MCP_gcc.o
+ .bss           0x00000000        0x0 ./asm/startup_MCP_gcc.o
+ .data          0x00000000        0x0 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_addsubdf3.o)
+ .bss           0x00000000        0x0 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_addsubdf3.o)
+ .data          0x00000000        0x0 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_muldivdf3.o)
+ .bss           0x00000000        0x0 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_muldivdf3.o)
+ .data          0x00000000        0x0 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_truncdfsf2.o)
+ .bss           0x00000000        0x0 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_truncdfsf2.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x00000000         0x00100000         xr
+RAM              0x20000000         0x00030000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD ./src/K1921VK01T_init.o
+LOAD ./src/main.o
+LOAD ./asm/startup_MCP_gcc.o
+LOAD D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libc.a
+LOAD D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a
+LOAD D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libm.a
+                0x00001000                _Stack_Size = 0x1000
+                0x2002fffc                _estack = ((ORIGIN (RAM) + 0x30000) - 0x4)
+
+.isr_vector     0x20000000      0x250
+                0x20000000                . = ALIGN (0x4)
+                0x20000000                __isr_vector_flash_start = LOADADDR (.isr_vector)
+                0x20000000                __isr_vector_ram_start = .
+ *(.isr_vector)
+ .isr_vector    0x20000000      0x250 ./asm/startup_MCP_gcc.o
+                0x20000000                g_pfnVectors
+                0x20000250                . = ALIGN (0x4)
+                0x20000250                __isr_vector_ram_end = .
+
+.fastcode       0x20000250        0x0
+                0x20000250                . = ALIGN (0x4)
+                0x20000250                __fastcode_flash_start = LOADADDR (.fastcode)
+                0x20000250                __fastcode_ram_start = .
+ *(.glue_7t)
+ .glue_7t       0x00000000        0x0 linker stubs
+ *(.glue_7)
+ .glue_7        0x00000000        0x0 linker stubs
+ *(.fastcode)
+ *(.fastcode*)
+                0x20000250                . = ALIGN (0x4)
+                0x20000250                __fastcode_ram_end = .
+
+.text           0x20000250     0x1ac8
+                0x20000250                . = ALIGN (0x4)
+ *(.text)
+ .text          0x20000250      0x370 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_addsubdf3.o)
+                0x20000250                __aeabi_drsub
+                0x20000258                __aeabi_dsub
+                0x20000258                __subdf3
+                0x2000025c                __aeabi_dadd
+                0x2000025c                __adddf3
+                0x200004d4                __floatunsidf
+                0x200004d4                __aeabi_ui2d
+                0x200004f4                __floatsidf
+                0x200004f4                __aeabi_i2d
+                0x20000518                __aeabi_f2d
+                0x20000518                __extendsfdf2
+                0x20000554                __floatundidf
+                0x20000554                __aeabi_ul2d
+                0x20000564                __floatdidf
+                0x20000564                __aeabi_l2d
+ .text          0x200005c0      0x424 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_muldivdf3.o)
+                0x200005c0                __aeabi_dmul
+                0x200005c0                __muldf3
+                0x20000814                __divdf3
+                0x20000814                __aeabi_ddiv
+ .text          0x200009e4       0xa0 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_truncdfsf2.o)
+                0x200009e4                __truncdfsf2
+                0x200009e4                __aeabi_d2f
+ *(.text*)
+ .text.K1921VK01T_GPIO_SafeInit
+                0x20000a84      0x6dc ./src/K1921VK01T_init.o
+                0x20000a84                K1921VK01T_GPIO_SafeInit
+ .text.InitCLK  0x20001160      0x140 ./src/K1921VK01T_init.o
+                0x20001160                InitCLK
+ .text.LED_init
+                0x200012a0      0x400 ./src/main.o
+                0x200012a0                LED_init
+ .text.delay    0x200016a0       0x48 ./src/main.o
+                0x200016a0                delay
+ .text.ResetConvstAB
+                0x200016e8       0x48 ./src/main.o
+                0x200016e8                ResetConvstAB
+ .text.ResetADC
+                0x20001730       0x50 ./src/main.o
+                0x20001730                ResetADC
+ .text.ResetLED
+                0x20001780       0xac ./src/main.o
+                0x20001780                ResetLED
+ .text.LedBlink
+                0x2000182c      0x2fc ./src/main.o
+                0x2000182c                LedBlink
+ .text.ReadData
+                0x20001b28      0x130 ./src/main.o
+                0x20001b28                ReadData
+ .text.ExchangeADC
+                0x20001c58       0x40 ./src/main.o
+                0x20001c58                ExchangeADC
+ .text.main     0x20001c98       0x18 ./src/main.o
+                0x20001c98                main
+ .text.Reset_Handler
+                0x20001cb0       0x64 ./asm/startup_MCP_gcc.o
+                0x20001cb0                Reset_Handler
+ .text.Default_Handler
+                0x20001d14        0x2 ./asm/startup_MCP_gcc.o
+                0x20001d14                EPWM_6_IRQHandler
+                0x20001d14                ADC_SEQ5_IRQHandler
+                0x20001d14                DebugMon_Handler
+                0x20001d14                ADC_SEQ4_IRQHandler
+                0x20001d14                USART0_TX_IRQHandler
+                0x20001d14                I2C0_IRQHandler
+                0x20001d14                CAN5_IRQHandler
+                0x20001d14                EPWM_HD_5_IRQHandler
+                0x20001d14                HardFault_Handler
+                0x20001d14                GPIOE_IRQHandler
+                0x20001d14                GPIOB_IRQHandler
+                0x20001d14                DMA1_Stream5_IRQHandler
+                0x20001d14                DMA1_Stream9_IRQHandler
+                0x20001d14                GPIOA_IRQHandler
+                0x20001d14                SysTick_Handler
+                0x20001d14                DMA1_Stream17_IRQHandler
+                0x20001d14                USART1_RX_IRQHandler
+                0x20001d14                PendSV_Handler
+                0x20001d14                EPWM_0_IRQHandler
+                0x20001d14                NMI_Handler
+                0x20001d14                ADC_SEQ1_IRQHandler
+                0x20001d14                I2C1_IRQHandler
+                0x20001d14                CAN12_IRQHandler
+                0x20001d14                CAN1_IRQHandler
+                0x20001d14                DMA1_Stream12_IRQHandler
+                0x20001d14                EPWM_TZ_0_IRQHandler
+                0x20001d14                EPWM_TZ_4_IRQHandler
+                0x20001d14                DMA1_Stream16_IRQHandler
+                0x20001d14                USART1_E_IRQHandler
+                0x20001d14                CMP2_IRQHandler
+                0x20001d14                EPWM_TZ_2_IRQHandler
+                0x20001d14                ADC_SEQ2_IRQHandler
+                0x20001d14                EPWM_5_IRQHandler
+                0x20001d14                ADC_SEQ0_IRQHandler
+                0x20001d14                USART1_TX_IRQHandler
+                0x20001d14                EPWM_7_IRQHandler
+                0x20001d14                ECAP2_IRQHandler
+                0x20001d14                DMA1_Stream2_IRQHandler
+                0x20001d14                ADC_SEQ6_IRQHandler
+                0x20001d14                DMA1_Stream15_IRQHandler
+                0x20001d14                EPWM_HD_2_IRQHandler
+                0x20001d14                CAN3_IRQHandler
+                0x20001d14                UsageFault_Handler
+                0x20001d14                EQEP1_IRQHandler
+                0x20001d14                EPWM_TZ_7_IRQHandler
+                0x20001d14                SPI1_IRQHandler
+                0x20001d14                DMA1_Stream11_IRQHandler
+                0x20001d14                CAN11_IRQHandler
+                0x20001d14                CMP1_IRQHandler
+                0x20001d14                USART0_MX_IRQHandler
+                0x20001d14                EPWM_3_IRQHandler
+                0x20001d14                GPIOF_IRQHandler
+                0x20001d14                USART3_IRQHandler
+                0x20001d14                CMP3_IRQHandler
+                0x20001d14                USART1_MX_IRQHandler
+                0x20001d14                UserFlash_IRQ
+                0x20001d14                EPWM_1_IRQHandler
+                0x20001d14                EPWM_HD_1_IRQHandler
+                0x20001d14                GPIOD_IRQHandler
+                0x20001d14                ECAP3_IRQHandler
+                0x20001d14                EPWM_HD_7_IRQHandler
+                0x20001d14                GPIOC_IRQHandler
+                0x20001d14                USART0_IRQHandler
+                0x20001d14                EPWM_TZ_5_IRQHandler
+                0x20001d14                DMA1_Stream6_IRQHandler
+                0x20001d14                EPWM_HD_3_IRQHandler
+                0x20001d14                EQEP0_IRQHandler
+                0x20001d14                DMA1_Stream1_IRQHandler
+                0x20001d14                ADC_SEQ3_IRQHandler
+                0x20001d14                USART2_RX_IRQHandler
+                0x20001d14                Default_Handler
+                0x20001d14                EPWM_HD_8_IRQHandler
+                0x20001d14                USART0_E_IRQHandler
+                0x20001d14                TIM1_IRQHandler
+                0x20001d14                DMA1_Stream10_IRQHandler
+                0x20001d14                EPWM_TZ_8_IRQHandler
+                0x20001d14                DMA1_Stream7_IRQHandler
+                0x20001d14                USART3_MX_IRQHandler
+                0x20001d14                USART2_RT_IRQHandler
+                0x20001d14                USART2_E_IRQHandler
+                0x20001d14                DMA1_Stream18_IRQHandler
+                0x20001d14                CAN13_IRQHandler
+                0x20001d14                ADC_CompInt_IRQHandler
+                0x20001d14                ECAP0_IRQHandler
+                0x20001d14                ADC_SEQ7_IRQHandler
+                0x20001d14                DMA1_Stream20_IRQHandler
+                0x20001d14                GPIOG_IRQHandler
+                0x20001d14                GPIOH_IRQHandler
+                0x20001d14                TIM0_IRQHandler
+                0x20001d14                DMA1_Stream19_IRQHandler
+                0x20001d14                SPI2_IRQHandler
+                0x20001d14                EPWM_TZ_6_IRQHandler
+                0x20001d14                USART0_RX_IRQHandler
+                0x20001d14                CAN14_IRQHandler
+                0x20001d14                MemManage_Handler
+                0x20001d14                CAN6_IRQHandler
+                0x20001d14                Ethernet_IRQHandler
+                0x20001d14                DMA1_Stream0_IRQHandler
+                0x20001d14                SVC_Handler
+                0x20001d14                USART3_RX_IRQHandler
+                0x20001d14                USART3_E_IRQHandler
+                0x20001d14                EPWM_HD_6_IRQHandler
+                0x20001d14                EPWM_4_IRQHandler
+                0x20001d14                CAN8_IRQHandler
+                0x20001d14                DMA1_Stream14_IRQHandler
+                0x20001d14                USART2_MX_IRQHandler
+                0x20001d14                CAN10_IRQHandler
+                0x20001d14                DMA1_Stream13_IRQHandler
+                0x20001d14                WWDG_IRQHandler
+                0x20001d14                CAN0_IRQHandler
+                0x20001d14                CAN15_IRQHandler
+                0x20001d14                DMA1_Stream8_IRQHandler
+                0x20001d14                USART3_RT_IRQHandler
+                0x20001d14                TIM2_IRQHandler
+                0x20001d14                ECAP4_IRQHandler
+                0x20001d14                EPWM_TZ_1_IRQHandler
+                0x20001d14                SPI0_IRQHandler
+                0x20001d14                EPWM_8_IRQHandler
+                0x20001d14                CAN9_IRQHandler
+                0x20001d14                BootFlash_IRQ
+                0x20001d14                EPWM_2_IRQHandler
+                0x20001d14                USART3_TX_IRQHandler
+                0x20001d14                USART2_IRQHandler
+                0x20001d14                ECAP1_IRQHandler
+                0x20001d14                CAN2_IRQHandler
+                0x20001d14                CAN7_IRQHandler
+                0x20001d14                EPWM_TZ_3_IRQHandler
+                0x20001d14                EPWM_HD_4_IRQHandler
+                0x20001d14                ECAP5_IRQHandler
+                0x20001d14                CAN4_IRQHandler
+                0x20001d14                DMA1_Stream21_IRQHandler
+                0x20001d14                BusFault_Handler
+                0x20001d14                USART1_IRQHandler
+                0x20001d14                DMA1_Stream23_IRQHandler
+                0x20001d14                SPI3_IRQHandler
+                0x20001d14                DMA1_Stream4_IRQHandler
+                0x20001d14                USART2_TX_IRQHandler
+                0x20001d14                USART1_RT_IRQHandler
+                0x20001d14                EPWM_HD_0_IRQHandler
+                0x20001d14                DMA1_Stream22_IRQHandler
+                0x20001d14                USART0_RT_IRQHandler
+                0x20001d14                DMA1_Stream3_IRQHandler
+ *(.rodata)
+ *(.rodata*)
+ *(.glue_7)
+ *(.glue_7t)
+ *(.eh_frame)
+ *(.init)
+ *(.fini)
+                0x20001d18                . = ALIGN (0x4)
+ *fill*         0x20001d16        0x2 
+                0x20001d18                _etext = .
+
+.vfp11_veneer   0x20001d18        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x20001d18        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x20001d18        0x0
+ .iplt          0x00000000        0x0 ./src/K1921VK01T_init.o
+
+.rel.dyn        0x20001d18        0x0
+ .rel.iplt      0x00000000        0x0 ./src/K1921VK01T_init.o
+
+.preinit_array  0x20001d18        0x0
+                0x20001d18                PROVIDE (__preinit_array_start, .)
+ *(.preinit_array*)
+                0x20001d18                PROVIDE (__preinit_array_end, .)
+
+.init_array     0x20001d18        0x0
+                0x20001d18                PROVIDE (__init_array_start, .)
+ *(SORT(.init_array.*))
+ *(.init_array*)
+                0x20001d18                PROVIDE (__init_array_end, .)
+
+.fini_array     0x20001d18        0x0
+                0x20001d18                PROVIDE (__fini_array_start, .)
+ *(.fini_array*)
+ *(SORT(.fini_array.*))
+                0x20001d18                PROVIDE (__fini_array_end, .)
+                0x20001d18                . = ALIGN (0x8)
+                0x20001d18                _sidata = .
+
+.data           0x20001d18        0x0
+                0x20001d18                . = ALIGN (0x4)
+                0x20001d18                _sdata = .
+ *(.data)
+ *(.data*)
+                0x20001d18                . = ALIGN (0x4)
+                0x20001d18                _edata = .
+
+.igot.plt       0x20001d18        0x0
+ .igot.plt      0x00000000        0x0 ./src/K1921VK01T_init.o
+                0x20001d18                . = ALIGN (0x4)
+
+.bss            0x20001d18       0x10
+                0x20001d18                _sbss = .
+                0x20001d18                __bss_start__ = _sbss
+ *(.bss)
+ *(.bss*)
+ .bss.i         0x20001d18        0x4 ./src/main.o
+                0x20001d18                i
+ *(COMMON)
+ COMMON         0x20001d1c        0xc ./src/main.o
+                0x20001d1c                busy
+                0x20001d20                result
+                0x20001d24                report
+                0x20001d26                res
+                0x20001d28                . = ALIGN (0x4)
+                0x20001d28                _ebss = .
+                0x20001d28                __bss_end__ = _ebss
+
+._user_heap_stack
+                0x20001d28     0x1004
+                0x20001d28                . = ALIGN (0x4)
+                0x20001d28                PROVIDE (end, .)
+                0x20001d28                PROVIDE (_end, .)
+                0x20002d2c                . = ((. + _Stack_Size) + 0x4)
+ *fill*         0x20001d28     0x1004 
+                0x20002d2c                . = ALIGN (0x4)
+
+/DISCARD/
+ libc.a(*)
+ libm.a(*)
+ libgcc.a(*)
+
+.ARM.attributes
+                0x00000000       0x37
+ *(.ARM.attributes)
+ .ARM.attributes
+                0x00000000       0x39 ./src/K1921VK01T_init.o
+ .ARM.attributes
+                0x00000039       0x39 ./src/main.o
+ .ARM.attributes
+                0x00000072       0x23 ./asm/startup_MCP_gcc.o
+ .ARM.attributes
+                0x00000095       0x22 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_addsubdf3.o)
+ .ARM.attributes
+                0x000000b7       0x22 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_muldivdf3.o)
+ .ARM.attributes
+                0x000000d9       0x22 D:/Worcspace/VectorIDE_Examples/Example_LED_blinking/lib/libgcc.a(_arm_truncdfsf2.o)
+OUTPUT(Example_LED_blinking.elf elf32-littlearm)
+
+.debug_info     0x00000000     0x630b
+ .debug_info    0x00000000     0x2cb9 ./src/K1921VK01T_init.o
+ .debug_info    0x00002cb9     0x35d9 ./src/main.o
+ .debug_info    0x00006292       0x79 ./asm/startup_MCP_gcc.o
+
+.debug_abbrev   0x00000000      0x30e
+ .debug_abbrev  0x00000000      0x162 ./src/K1921VK01T_init.o
+ .debug_abbrev  0x00000162      0x19a ./src/main.o
+ .debug_abbrev  0x000002fc       0x12 ./asm/startup_MCP_gcc.o
+
+.debug_aranges  0x00000000       0xb0
+ .debug_aranges
+                0x00000000       0x28 ./src/K1921VK01T_init.o
+ .debug_aranges
+                0x00000028       0x60 ./src/main.o
+ .debug_aranges
+                0x00000088       0x28 ./asm/startup_MCP_gcc.o
+
+.debug_ranges   0x00000000       0x88
+ .debug_ranges  0x00000000       0x18 ./src/K1921VK01T_init.o
+ .debug_ranges  0x00000018       0x50 ./src/main.o
+ .debug_ranges  0x00000068       0x20 ./asm/startup_MCP_gcc.o
+
+.debug_macro    0x00000000     0x8889
+ .debug_macro   0x00000000       0xe2 ./src/K1921VK01T_init.o
+ .debug_macro   0x000000e2      0x868 ./src/K1921VK01T_init.o
+ .debug_macro   0x0000094a       0x1c ./src/K1921VK01T_init.o
+ .debug_macro   0x00000966       0x52 ./src/K1921VK01T_init.o
+ .debug_macro   0x000009b8       0x16 ./src/K1921VK01T_init.o
+ .debug_macro   0x000009ce       0x35 ./src/K1921VK01T_init.o
+ .debug_macro   0x00000a03       0xa3 ./src/K1921VK01T_init.o
+ .debug_macro   0x00000aa6      0x20e ./src/K1921VK01T_init.o
+ .debug_macro   0x00000cb4     0x6ec0 ./src/K1921VK01T_init.o
+ .debug_macro   0x00007b74       0x3b ./src/K1921VK01T_init.o
+ .debug_macro   0x00007baf       0x18 ./src/K1921VK01T_init.o
+ .debug_macro   0x00007bc7       0x42 ./src/K1921VK01T_init.o
+ .debug_macro   0x00007c09      0xab5 ./src/K1921VK01T_init.o
+ .debug_macro   0x000086be       0x34 ./src/K1921VK01T_init.o
+ .debug_macro   0x000086f2      0x175 ./src/main.o
+ .debug_macro   0x00008867       0x22 ./src/main.o
+
+.debug_line     0x00000000      0x6b0
+ .debug_line    0x00000000      0x2e7 ./src/K1921VK01T_init.o
+ .debug_line    0x000002e7      0x34d ./src/main.o
+ .debug_line    0x00000634       0x7c ./asm/startup_MCP_gcc.o
+
+.debug_str      0x00000000    0x2b188
+ .debug_str     0x00000000    0x2a61d ./src/K1921VK01T_init.o
+                              0x2a6e2 (size before relaxing)
+ .debug_str     0x0002a61d      0xb6b ./src/main.o
+                              0x2b010 (size before relaxing)
+
+.comment        0x00000000       0x46
+ .comment       0x00000000       0x46 ./src/K1921VK01T_init.o
+                                 0x47 (size before relaxing)
+ .comment       0x00000000       0x47 ./src/main.o
+
+.debug_frame    0x00000000      0x158
+ .debug_frame   0x00000000       0x4c ./src/K1921VK01T_init.o
+ .debug_frame   0x0000004c      0x10c ./src/main.o

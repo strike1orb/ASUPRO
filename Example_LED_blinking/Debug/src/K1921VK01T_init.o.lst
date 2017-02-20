@@ -1,0 +1,1221 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 3
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.file	"K1921VK01T_init.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.section	.text.K1921VK01T_GPIO_SafeInit,"ax",%progbits
+  21              		.align	2
+  22              		.global	K1921VK01T_GPIO_SafeInit
+  23              		.thumb
+  24              		.thumb_func
+  26              	K1921VK01T_GPIO_SafeInit:
+  27              	.LFB111:
+  28              		.file 1 "../src/K1921VK01T_init.c"
+   1:../src/K1921VK01T_init.c **** /******************************************************************************
+   2:../src/K1921VK01T_init.c ****  * @file		K1921VK01T_init.c
+   3:../src/K1921VK01T_init.c ****  * @brief		Файл предварительной инициализации периферии микроконтроллера
+   4:../src/K1921VK01T_init.c ****  * @version		v1.0
+   5:../src/K1921VK01T_init.c ****  * @date		11 декабря 2015
+   6:../src/K1921VK01T_init.c ****  *
+   7:../src/K1921VK01T_init.c ****  * @note
+   8:../src/K1921VK01T_init.c ****  * ООО "НПФ Вектор" (http://motorcontrol.ru), все права защищены.
+   9:../src/K1921VK01T_init.c ****  *
+  10:../src/K1921VK01T_init.c ****  * @par
+  11:../src/K1921VK01T_init.c ****  *
+  12:../src/K1921VK01T_init.c ****  * 
+  13:../src/K1921VK01T_init.c ****  *
+  14:../src/K1921VK01T_init.c ****  * @par
+  15:../src/K1921VK01T_init.c ****  * Данное программное обеспечение распространяется "как есть", и Вы,
+  16:../src/K1921VK01T_init.c ****  * его пользователь, принимаете на себя все риски, связанные с его использованием.
+  17:../src/K1921VK01T_init.c ****  * ООО "НПФ Вектор" не несет никакой ответственности за возможные убытки,
+  18:../src/K1921VK01T_init.c ****  * связанные с его использованием.
+  19:../src/K1921VK01T_init.c ****  *
+  20:../src/K1921VK01T_init.c ****  ******************************************************************************/
+  21:../src/K1921VK01T_init.c **** 
+  22:../src/K1921VK01T_init.c **** #include "main.h"
+  23:../src/K1921VK01T_init.c **** 
+  24:../src/K1921VK01T_init.c **** 
+  25:../src/K1921VK01T_init.c **** //System clock sources
+  26:../src/K1921VK01T_init.c **** #define SYSCLK_REFCLK       0
+  27:../src/K1921VK01T_init.c **** #define SYSCLK_PORCLK       1
+  28:../src/K1921VK01T_init.c **** #define SYSCLK_OSCCLK       2
+  29:../src/K1921VK01T_init.c **** #define SYSCLK_PLLCLK       3
+  30:../src/K1921VK01T_init.c **** #define SYSCLK_PLLDIVCLK    4
+  31:../src/K1921VK01T_init.c **** #define SYSCLK_USB60CLK     5
+  32:../src/K1921VK01T_init.c **** #define SYSCLK_USB12CLK     6
+  33:../src/K1921VK01T_init.c **** #define SYSCLK_ETH25CLK     7
+  34:../src/K1921VK01T_init.c **** 
+  35:../src/K1921VK01T_init.c **** 
+  36:../src/K1921VK01T_init.c **** //Процедура безопасной инициализации альтернативных функций дискретных ножек.
+  37:../src/K1921VK01T_init.c **** //Одна и та же функция может быть назначена для нескольких ножек. В таком случае не будет работать 
+  38:../src/K1921VK01T_init.c **** //если они находятся в режиме дискретного ввода-вывода, т.е. альт. функция отключена.
+  39:../src/K1921VK01T_init.c **** //Для корректной инициализации каждой ножке назначается альт. функция, которая с наименьшей вероятн
+  40:../src/K1921VK01T_init.c **** //Впоследствии альт. функции для нужных ножек будут переназначены в соответствии с выполняемой зада
+  41:../src/K1921VK01T_init.c **** void K1921VK01T_GPIO_SafeInit()
+  42:../src/K1921VK01T_init.c **** {
+  29              		.loc 1 42 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 7, -4
+  37 0002 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  43:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN0 = 2;	//RAM_DATA[12]
+  39              		.loc 1 43 0
+  40 0004 0023     		movs	r3, #0
+  41 0006 C8F20303 		movt	r3, 32771
+  42 000a 9A69     		ldr	r2, [r3, #24]
+  43 000c 0221     		movs	r1, #2
+  44 000e 61F30102 		bfi	r2, r1, #0, #2
+  45 0012 9A61     		str	r2, [r3, #24]
+  44:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN1 = 2;	//trace_dat[3]
+  46              		.loc 1 44 0
+  47 0014 0023     		movs	r3, #0
+  48 0016 C8F20303 		movt	r3, 32771
+  49 001a 9A69     		ldr	r2, [r3, #24]
+  50 001c 0221     		movs	r1, #2
+  51 001e 61F38302 		bfi	r2, r1, #2, #2
+  52 0022 9A61     		str	r2, [r3, #24]
+  45:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN2 = 2;	//RAM_Oen[0]
+  53              		.loc 1 45 0
+  54 0024 0023     		movs	r3, #0
+  55 0026 C8F20303 		movt	r3, 32771
+  56 002a 9A69     		ldr	r2, [r3, #24]
+  57 002c 0221     		movs	r1, #2
+  58 002e 61F30512 		bfi	r2, r1, #4, #2
+  59 0032 9A61     		str	r2, [r3, #24]
+  46:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN3 = 2;	//RAM_Oen[1]
+  60              		.loc 1 46 0
+  61 0034 0023     		movs	r3, #0
+  62 0036 C8F20303 		movt	r3, 32771
+  63 003a 9A69     		ldr	r2, [r3, #24]
+  64 003c 0221     		movs	r1, #2
+  65 003e 61F38712 		bfi	r2, r1, #6, #2
+  66 0042 9A61     		str	r2, [r3, #24]
+  47:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN4 = 2;	//trace_dat[2]
+  67              		.loc 1 47 0
+  68 0044 0023     		movs	r3, #0
+  69 0046 C8F20303 		movt	r3, 32771
+  70 004a 9A69     		ldr	r2, [r3, #24]
+  71 004c 0221     		movs	r1, #2
+  72 004e 61F30922 		bfi	r2, r1, #8, #2
+  73 0052 9A61     		str	r2, [r3, #24]
+  48:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN5 = 2;	//trace_dat[0]
+  74              		.loc 1 48 0
+  75 0054 0023     		movs	r3, #0
+  76 0056 C8F20303 		movt	r3, 32771
+  77 005a 9A69     		ldr	r2, [r3, #24]
+  78 005c 0221     		movs	r1, #2
+  79 005e 61F38B22 		bfi	r2, r1, #10, #2
+  80 0062 9A61     		str	r2, [r3, #24]
+  49:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN6 = 2;	//trace_dat[1]
+  81              		.loc 1 49 0
+  82 0064 0023     		movs	r3, #0
+  83 0066 C8F20303 		movt	r3, 32771
+  84 006a 9A69     		ldr	r2, [r3, #24]
+  85 006c 0221     		movs	r1, #2
+  86 006e 61F30D32 		bfi	r2, r1, #12, #2
+  87 0072 9A61     		str	r2, [r3, #24]
+  50:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN7 = 2;	//trace_clk
+  88              		.loc 1 50 0
+  89 0074 0023     		movs	r3, #0
+  90 0076 C8F20303 		movt	r3, 32771
+  91 007a 9A69     		ldr	r2, [r3, #24]
+  92 007c 0221     		movs	r1, #2
+  93 007e 61F38F32 		bfi	r2, r1, #14, #2
+  94 0082 9A61     		str	r2, [r3, #24]
+  51:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN8 = 0;	//RAM_ADDR[0]
+  95              		.loc 1 51 0
+  96 0084 0023     		movs	r3, #0
+  97 0086 C8F20303 		movt	r3, 32771
+  98 008a 9A69     		ldr	r2, [r3, #24]
+  99 008c 6FF31142 		bfc	r2, #16, #2
+ 100 0090 9A61     		str	r2, [r3, #24]
+  52:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN9 = 0;	//RAM_ADDR[1]
+ 101              		.loc 1 52 0
+ 102 0092 0023     		movs	r3, #0
+ 103 0094 C8F20303 		movt	r3, 32771
+ 104 0098 9A69     		ldr	r2, [r3, #24]
+ 105 009a 6FF39342 		bfc	r2, #18, #2
+ 106 009e 9A61     		str	r2, [r3, #24]
+  53:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN10 = 0;	//RAM_ADDR[2]
+ 107              		.loc 1 53 0
+ 108 00a0 0023     		movs	r3, #0
+ 109 00a2 C8F20303 		movt	r3, 32771
+ 110 00a6 9A69     		ldr	r2, [r3, #24]
+ 111 00a8 6FF31552 		bfc	r2, #20, #2
+ 112 00ac 9A61     		str	r2, [r3, #24]
+  54:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN11 = 0;	//RAM_ADDR[3]
+ 113              		.loc 1 54 0
+ 114 00ae 0023     		movs	r3, #0
+ 115 00b0 C8F20303 		movt	r3, 32771
+ 116 00b4 9A69     		ldr	r2, [r3, #24]
+ 117 00b6 6FF39752 		bfc	r2, #22, #2
+ 118 00ba 9A61     		str	r2, [r3, #24]
+  55:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN12 = 0;	//RAM_ADDR[4]
+ 119              		.loc 1 55 0
+ 120 00bc 0023     		movs	r3, #0
+ 121 00be C8F20303 		movt	r3, 32771
+ 122 00c2 9A69     		ldr	r2, [r3, #24]
+ 123 00c4 6FF31962 		bfc	r2, #24, #2
+ 124 00c8 9A61     		str	r2, [r3, #24]
+  56:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN13 = 0;	//RAM_ADDR[5]
+ 125              		.loc 1 56 0
+ 126 00ca 0023     		movs	r3, #0
+ 127 00cc C8F20303 		movt	r3, 32771
+ 128 00d0 9A69     		ldr	r2, [r3, #24]
+ 129 00d2 6FF39B62 		bfc	r2, #26, #2
+ 130 00d6 9A61     		str	r2, [r3, #24]
+  57:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN14 = 0;	//RAM_ADDR[6]
+ 131              		.loc 1 57 0
+ 132 00d8 0023     		movs	r3, #0
+ 133 00da C8F20303 		movt	r3, 32771
+ 134 00de 9A69     		ldr	r2, [r3, #24]
+ 135 00e0 6FF31D72 		bfc	r2, #28, #2
+ 136 00e4 9A61     		str	r2, [r3, #24]
+  58:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLA_bit.PIN15 = 0;	//RAM_ADDR[7]
+ 137              		.loc 1 58 0
+ 138 00e6 0023     		movs	r3, #0
+ 139 00e8 C8F20303 		movt	r3, 32771
+ 140 00ec 9A69     		ldr	r2, [r3, #24]
+ 141 00ee 6FF39F72 		bfc	r2, #30, #2
+ 142 00f2 9A61     		str	r2, [r3, #24]
+  59:../src/K1921VK01T_init.c **** 
+  60:../src/K1921VK01T_init.c **** 	//NT_COMMON_REG->GPIOPCTLB_bit.PIN0 = 2;	//RAM_Wen		Использована под TDI JTAG'а
+  61:../src/K1921VK01T_init.c **** 	//NT_COMMON_REG->GPIOPCTLB_bit.PIN1 = 2;	//RAM_Cen[0]	Использована под TMS JTAG'а
+  62:../src/K1921VK01T_init.c **** 	//NT_COMMON_REG->GPIOPCTLB_bit.PIN2 = 2;	//RAM_Cen[1]	Использована под TCK JTAG'а
+  63:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN3 = 2;	//RAM_ADDR[0]
+ 143              		.loc 1 63 0
+ 144 00f4 0023     		movs	r3, #0
+ 145 00f6 C8F20303 		movt	r3, 32771
+ 146 00fa DA69     		ldr	r2, [r3, #28]
+ 147 00fc 0221     		movs	r1, #2
+ 148 00fe 61F38712 		bfi	r2, r1, #6, #2
+ 149 0102 DA61     		str	r2, [r3, #28]
+  64:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN4 = 0;	//RAM_ADDR[8]
+ 150              		.loc 1 64 0
+ 151 0104 0023     		movs	r3, #0
+ 152 0106 C8F20303 		movt	r3, 32771
+ 153 010a DA69     		ldr	r2, [r3, #28]
+ 154 010c 6FF30922 		bfc	r2, #8, #2
+ 155 0110 DA61     		str	r2, [r3, #28]
+  65:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN5 = 0;	//RAM_ADDR[9]
+ 156              		.loc 1 65 0
+ 157 0112 0023     		movs	r3, #0
+ 158 0114 C8F20303 		movt	r3, 32771
+ 159 0118 DA69     		ldr	r2, [r3, #28]
+ 160 011a 6FF38B22 		bfc	r2, #10, #2
+ 161 011e DA61     		str	r2, [r3, #28]
+  66:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN6 = 0;	//RAM_ADDR[10]
+ 162              		.loc 1 66 0
+ 163 0120 0023     		movs	r3, #0
+ 164 0122 C8F20303 		movt	r3, 32771
+ 165 0126 DA69     		ldr	r2, [r3, #28]
+ 166 0128 6FF30D32 		bfc	r2, #12, #2
+ 167 012c DA61     		str	r2, [r3, #28]
+  67:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN7 = 0;	//RAM_ADDR[11]
+ 168              		.loc 1 67 0
+ 169 012e 0023     		movs	r3, #0
+ 170 0130 C8F20303 		movt	r3, 32771
+ 171 0134 DA69     		ldr	r2, [r3, #28]
+ 172 0136 6FF38F32 		bfc	r2, #14, #2
+ 173 013a DA61     		str	r2, [r3, #28]
+  68:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN8 = 0;	//RAM_ADDR[12]
+ 174              		.loc 1 68 0
+ 175 013c 0023     		movs	r3, #0
+ 176 013e C8F20303 		movt	r3, 32771
+ 177 0142 DA69     		ldr	r2, [r3, #28]
+ 178 0144 6FF31142 		bfc	r2, #16, #2
+ 179 0148 DA61     		str	r2, [r3, #28]
+  69:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN9 = 0;	//RAM_ADDR[13]
+ 180              		.loc 1 69 0
+ 181 014a 0023     		movs	r3, #0
+ 182 014c C8F20303 		movt	r3, 32771
+ 183 0150 DA69     		ldr	r2, [r3, #28]
+ 184 0152 6FF39342 		bfc	r2, #18, #2
+ 185 0156 DA61     		str	r2, [r3, #28]
+  70:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN10 = 0;	//RAM_ADDR[14]
+ 186              		.loc 1 70 0
+ 187 0158 0023     		movs	r3, #0
+ 188 015a C8F20303 		movt	r3, 32771
+ 189 015e DA69     		ldr	r2, [r3, #28]
+ 190 0160 6FF31552 		bfc	r2, #20, #2
+ 191 0164 DA61     		str	r2, [r3, #28]
+  71:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN11 = 0;	//RAM_ADDR[15]
+ 192              		.loc 1 71 0
+ 193 0166 0023     		movs	r3, #0
+ 194 0168 C8F20303 		movt	r3, 32771
+ 195 016c DA69     		ldr	r2, [r3, #28]
+ 196 016e 6FF39752 		bfc	r2, #22, #2
+ 197 0172 DA61     		str	r2, [r3, #28]
+  72:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN12 = 0;	//RAM_ADDR[16]
+ 198              		.loc 1 72 0
+ 199 0174 0023     		movs	r3, #0
+ 200 0176 C8F20303 		movt	r3, 32771
+ 201 017a DA69     		ldr	r2, [r3, #28]
+ 202 017c 6FF31962 		bfc	r2, #24, #2
+ 203 0180 DA61     		str	r2, [r3, #28]
+  73:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN13 = 0;	//RAM_ADDR[17]
+ 204              		.loc 1 73 0
+ 205 0182 0023     		movs	r3, #0
+ 206 0184 C8F20303 		movt	r3, 32771
+ 207 0188 DA69     		ldr	r2, [r3, #28]
+ 208 018a 6FF39B62 		bfc	r2, #26, #2
+ 209 018e DA61     		str	r2, [r3, #28]
+  74:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN14 = 0;	//RAM_ADDR[18]
+ 210              		.loc 1 74 0
+ 211 0190 0023     		movs	r3, #0
+ 212 0192 C8F20303 		movt	r3, 32771
+ 213 0196 DA69     		ldr	r2, [r3, #28]
+ 214 0198 6FF31D72 		bfc	r2, #28, #2
+ 215 019c DA61     		str	r2, [r3, #28]
+  75:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLB_bit.PIN15 = 0;	//RAM_DATA[0]
+ 216              		.loc 1 75 0
+ 217 019e 0023     		movs	r3, #0
+ 218 01a0 C8F20303 		movt	r3, 32771
+ 219 01a4 DA69     		ldr	r2, [r3, #28]
+ 220 01a6 6FF39F72 		bfc	r2, #30, #2
+ 221 01aa DA61     		str	r2, [r3, #28]
+  76:../src/K1921VK01T_init.c **** 
+  77:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN0 = 2;	//RAM_ADDR[1]
+ 222              		.loc 1 77 0
+ 223 01ac 0023     		movs	r3, #0
+ 224 01ae C8F20303 		movt	r3, 32771
+ 225 01b2 1A6A     		ldr	r2, [r3, #32]
+ 226 01b4 0221     		movs	r1, #2
+ 227 01b6 61F30102 		bfi	r2, r1, #0, #2
+ 228 01ba 1A62     		str	r2, [r3, #32]
+  78:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN1 = 2;	//RAM_ADDR[2]
+ 229              		.loc 1 78 0
+ 230 01bc 0023     		movs	r3, #0
+ 231 01be C8F20303 		movt	r3, 32771
+ 232 01c2 1A6A     		ldr	r2, [r3, #32]
+ 233 01c4 0221     		movs	r1, #2
+ 234 01c6 61F38302 		bfi	r2, r1, #2, #2
+ 235 01ca 1A62     		str	r2, [r3, #32]
+  79:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN2 = 2;	//RAM_ADDR[3]
+ 236              		.loc 1 79 0
+ 237 01cc 0023     		movs	r3, #0
+ 238 01ce C8F20303 		movt	r3, 32771
+ 239 01d2 1A6A     		ldr	r2, [r3, #32]
+ 240 01d4 0221     		movs	r1, #2
+ 241 01d6 61F30512 		bfi	r2, r1, #4, #2
+ 242 01da 1A62     		str	r2, [r3, #32]
+  80:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN3 = 2;	//RAM_ADDR[4]
+ 243              		.loc 1 80 0
+ 244 01dc 0023     		movs	r3, #0
+ 245 01de C8F20303 		movt	r3, 32771
+ 246 01e2 1A6A     		ldr	r2, [r3, #32]
+ 247 01e4 0221     		movs	r1, #2
+ 248 01e6 61F38712 		bfi	r2, r1, #6, #2
+ 249 01ea 1A62     		str	r2, [r3, #32]
+  81:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN4 = 2;	//RAM_ADDR[5]
+ 250              		.loc 1 81 0
+ 251 01ec 0023     		movs	r3, #0
+ 252 01ee C8F20303 		movt	r3, 32771
+ 253 01f2 1A6A     		ldr	r2, [r3, #32]
+ 254 01f4 0221     		movs	r1, #2
+ 255 01f6 61F30922 		bfi	r2, r1, #8, #2
+ 256 01fa 1A62     		str	r2, [r3, #32]
+  82:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN5 = 2;	//RAM_ADDR[6]
+ 257              		.loc 1 82 0
+ 258 01fc 0023     		movs	r3, #0
+ 259 01fe C8F20303 		movt	r3, 32771
+ 260 0202 1A6A     		ldr	r2, [r3, #32]
+ 261 0204 0221     		movs	r1, #2
+ 262 0206 61F38B22 		bfi	r2, r1, #10, #2
+ 263 020a 1A62     		str	r2, [r3, #32]
+  83:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN6 = 0;	//RAM_DATA[1]
+ 264              		.loc 1 83 0
+ 265 020c 0023     		movs	r3, #0
+ 266 020e C8F20303 		movt	r3, 32771
+ 267 0212 1A6A     		ldr	r2, [r3, #32]
+ 268 0214 6FF30D32 		bfc	r2, #12, #2
+ 269 0218 1A62     		str	r2, [r3, #32]
+  84:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN7 = 0;	//RAM_DATA[2]
+ 270              		.loc 1 84 0
+ 271 021a 0023     		movs	r3, #0
+ 272 021c C8F20303 		movt	r3, 32771
+ 273 0220 1A6A     		ldr	r2, [r3, #32]
+ 274 0222 6FF38F32 		bfc	r2, #14, #2
+ 275 0226 1A62     		str	r2, [r3, #32]
+  85:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN8 = 0;	//RAM_DATA[3]
+ 276              		.loc 1 85 0
+ 277 0228 0023     		movs	r3, #0
+ 278 022a C8F20303 		movt	r3, 32771
+ 279 022e 1A6A     		ldr	r2, [r3, #32]
+ 280 0230 6FF31142 		bfc	r2, #16, #2
+ 281 0234 1A62     		str	r2, [r3, #32]
+  86:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN9 = 0;	//RAM_DATA[4]
+ 282              		.loc 1 86 0
+ 283 0236 0023     		movs	r3, #0
+ 284 0238 C8F20303 		movt	r3, 32771
+ 285 023c 1A6A     		ldr	r2, [r3, #32]
+ 286 023e 6FF39342 		bfc	r2, #18, #2
+ 287 0242 1A62     		str	r2, [r3, #32]
+  87:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN10 = 0;	//RAM_DATA[5]
+ 288              		.loc 1 87 0
+ 289 0244 0023     		movs	r3, #0
+ 290 0246 C8F20303 		movt	r3, 32771
+ 291 024a 1A6A     		ldr	r2, [r3, #32]
+ 292 024c 6FF31552 		bfc	r2, #20, #2
+ 293 0250 1A62     		str	r2, [r3, #32]
+  88:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN11 = 0;	//RAM_DATA[6]
+ 294              		.loc 1 88 0
+ 295 0252 0023     		movs	r3, #0
+ 296 0254 C8F20303 		movt	r3, 32771
+ 297 0258 1A6A     		ldr	r2, [r3, #32]
+ 298 025a 6FF39752 		bfc	r2, #22, #2
+ 299 025e 1A62     		str	r2, [r3, #32]
+  89:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN12 = 0;	//RAM_DATA[7]
+ 300              		.loc 1 89 0
+ 301 0260 0023     		movs	r3, #0
+ 302 0262 C8F20303 		movt	r3, 32771
+ 303 0266 1A6A     		ldr	r2, [r3, #32]
+ 304 0268 6FF31962 		bfc	r2, #24, #2
+ 305 026c 1A62     		str	r2, [r3, #32]
+  90:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN13 = 0;	//RAM_DATA[8]
+ 306              		.loc 1 90 0
+ 307 026e 0023     		movs	r3, #0
+ 308 0270 C8F20303 		movt	r3, 32771
+ 309 0274 1A6A     		ldr	r2, [r3, #32]
+ 310 0276 6FF39B62 		bfc	r2, #26, #2
+ 311 027a 1A62     		str	r2, [r3, #32]
+  91:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN14 = 0;	//RAM_DATA[9]
+ 312              		.loc 1 91 0
+ 313 027c 0023     		movs	r3, #0
+ 314 027e C8F20303 		movt	r3, 32771
+ 315 0282 1A6A     		ldr	r2, [r3, #32]
+ 316 0284 6FF31D72 		bfc	r2, #28, #2
+ 317 0288 1A62     		str	r2, [r3, #32]
+  92:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLC_bit.PIN15 = 0;	//RAM_DATA[10]
+ 318              		.loc 1 92 0
+ 319 028a 0023     		movs	r3, #0
+ 320 028c C8F20303 		movt	r3, 32771
+ 321 0290 1A6A     		ldr	r2, [r3, #32]
+ 322 0292 6FF39F72 		bfc	r2, #30, #2
+ 323 0296 1A62     		str	r2, [r3, #32]
+  93:../src/K1921VK01T_init.c **** 
+  94:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN0 = 2;	//RAM_ADDR[7]
+ 324              		.loc 1 94 0
+ 325 0298 0023     		movs	r3, #0
+ 326 029a C8F20303 		movt	r3, 32771
+ 327 029e 5A6A     		ldr	r2, [r3, #36]
+ 328 02a0 0221     		movs	r1, #2
+ 329 02a2 61F30102 		bfi	r2, r1, #0, #2
+ 330 02a6 5A62     		str	r2, [r3, #36]
+  95:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN1 = 2;	//RAM_ADDR[8]
+ 331              		.loc 1 95 0
+ 332 02a8 0023     		movs	r3, #0
+ 333 02aa C8F20303 		movt	r3, 32771
+ 334 02ae 5A6A     		ldr	r2, [r3, #36]
+ 335 02b0 0221     		movs	r1, #2
+ 336 02b2 61F38302 		bfi	r2, r1, #2, #2
+ 337 02b6 5A62     		str	r2, [r3, #36]
+  96:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN2 = 2;	//RAM_ADDR[9]
+ 338              		.loc 1 96 0
+ 339 02b8 0023     		movs	r3, #0
+ 340 02ba C8F20303 		movt	r3, 32771
+ 341 02be 5A6A     		ldr	r2, [r3, #36]
+ 342 02c0 0221     		movs	r1, #2
+ 343 02c2 61F30512 		bfi	r2, r1, #4, #2
+ 344 02c6 5A62     		str	r2, [r3, #36]
+  97:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN3 = 2;	//RAM_ADDR[10]
+ 345              		.loc 1 97 0
+ 346 02c8 0023     		movs	r3, #0
+ 347 02ca C8F20303 		movt	r3, 32771
+ 348 02ce 5A6A     		ldr	r2, [r3, #36]
+ 349 02d0 0221     		movs	r1, #2
+ 350 02d2 61F38712 		bfi	r2, r1, #6, #2
+ 351 02d6 5A62     		str	r2, [r3, #36]
+  98:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN4 = 2;	//RAM_ADDR[11]
+ 352              		.loc 1 98 0
+ 353 02d8 0023     		movs	r3, #0
+ 354 02da C8F20303 		movt	r3, 32771
+ 355 02de 5A6A     		ldr	r2, [r3, #36]
+ 356 02e0 0221     		movs	r1, #2
+ 357 02e2 61F30922 		bfi	r2, r1, #8, #2
+ 358 02e6 5A62     		str	r2, [r3, #36]
+  99:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN5 = 2;	//RAM_ADDR[12]
+ 359              		.loc 1 99 0
+ 360 02e8 0023     		movs	r3, #0
+ 361 02ea C8F20303 		movt	r3, 32771
+ 362 02ee 5A6A     		ldr	r2, [r3, #36]
+ 363 02f0 0221     		movs	r1, #2
+ 364 02f2 61F38B22 		bfi	r2, r1, #10, #2
+ 365 02f6 5A62     		str	r2, [r3, #36]
+ 100:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN6 = 2;	//RAM_DATA[0]
+ 366              		.loc 1 100 0
+ 367 02f8 0023     		movs	r3, #0
+ 368 02fa C8F20303 		movt	r3, 32771
+ 369 02fe 5A6A     		ldr	r2, [r3, #36]
+ 370 0300 0221     		movs	r1, #2
+ 371 0302 61F30D32 		bfi	r2, r1, #12, #2
+ 372 0306 5A62     		str	r2, [r3, #36]
+ 101:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN7 = 2;	//RAM_DATA[1]
+ 373              		.loc 1 101 0
+ 374 0308 0023     		movs	r3, #0
+ 375 030a C8F20303 		movt	r3, 32771
+ 376 030e 5A6A     		ldr	r2, [r3, #36]
+ 377 0310 0221     		movs	r1, #2
+ 378 0312 61F38F32 		bfi	r2, r1, #14, #2
+ 379 0316 5A62     		str	r2, [r3, #36]
+ 102:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN8 = 2;	//RAM_DATA[2]
+ 380              		.loc 1 102 0
+ 381 0318 0023     		movs	r3, #0
+ 382 031a C8F20303 		movt	r3, 32771
+ 383 031e 5A6A     		ldr	r2, [r3, #36]
+ 384 0320 0221     		movs	r1, #2
+ 385 0322 61F31142 		bfi	r2, r1, #16, #2
+ 386 0326 5A62     		str	r2, [r3, #36]
+ 103:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN9 = 2;	//RAM_DATA[3]
+ 387              		.loc 1 103 0
+ 388 0328 0023     		movs	r3, #0
+ 389 032a C8F20303 		movt	r3, 32771
+ 390 032e 5A6A     		ldr	r2, [r3, #36]
+ 391 0330 0221     		movs	r1, #2
+ 392 0332 61F39342 		bfi	r2, r1, #18, #2
+ 393 0336 5A62     		str	r2, [r3, #36]
+ 104:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN10 = 2;	//RAM_DATA[4]
+ 394              		.loc 1 104 0
+ 395 0338 0023     		movs	r3, #0
+ 396 033a C8F20303 		movt	r3, 32771
+ 397 033e 5A6A     		ldr	r2, [r3, #36]
+ 398 0340 0221     		movs	r1, #2
+ 399 0342 61F31552 		bfi	r2, r1, #20, #2
+ 400 0346 5A62     		str	r2, [r3, #36]
+ 105:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN11 = 2;	//eCMP_OUT[0]
+ 401              		.loc 1 105 0
+ 402 0348 0023     		movs	r3, #0
+ 403 034a C8F20303 		movt	r3, 32771
+ 404 034e 5A6A     		ldr	r2, [r3, #36]
+ 405 0350 0221     		movs	r1, #2
+ 406 0352 61F39752 		bfi	r2, r1, #22, #2
+ 407 0356 5A62     		str	r2, [r3, #36]
+ 106:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN12 = 0;	//RAM_DATA[11]
+ 408              		.loc 1 106 0
+ 409 0358 0023     		movs	r3, #0
+ 410 035a C8F20303 		movt	r3, 32771
+ 411 035e 5A6A     		ldr	r2, [r3, #36]
+ 412 0360 6FF31962 		bfc	r2, #24, #2
+ 413 0364 5A62     		str	r2, [r3, #36]
+ 107:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN13 = 0;	//RAM_DATA[12]
+ 414              		.loc 1 107 0
+ 415 0366 0023     		movs	r3, #0
+ 416 0368 C8F20303 		movt	r3, 32771
+ 417 036c 5A6A     		ldr	r2, [r3, #36]
+ 418 036e 6FF39B62 		bfc	r2, #26, #2
+ 419 0372 5A62     		str	r2, [r3, #36]
+ 108:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN14 = 0;	//RAM_DATA[13]
+ 420              		.loc 1 108 0
+ 421 0374 0023     		movs	r3, #0
+ 422 0376 C8F20303 		movt	r3, 32771
+ 423 037a 5A6A     		ldr	r2, [r3, #36]
+ 424 037c 6FF31D72 		bfc	r2, #28, #2
+ 425 0380 5A62     		str	r2, [r3, #36]
+ 109:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLD_bit.PIN15 = 0;	//RAM_DATA[14]
+ 426              		.loc 1 109 0
+ 427 0382 0023     		movs	r3, #0
+ 428 0384 C8F20303 		movt	r3, 32771
+ 429 0388 5A6A     		ldr	r2, [r3, #36]
+ 430 038a 6FF39F72 		bfc	r2, #30, #2
+ 431 038e 5A62     		str	r2, [r3, #36]
+ 110:../src/K1921VK01T_init.c **** 
+ 111:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN0 = 2;	//eCMP_OUT[1]
+ 432              		.loc 1 111 0
+ 433 0390 0023     		movs	r3, #0
+ 434 0392 C8F20303 		movt	r3, 32771
+ 435 0396 9A6A     		ldr	r2, [r3, #40]
+ 436 0398 0221     		movs	r1, #2
+ 437 039a 61F30102 		bfi	r2, r1, #0, #2
+ 438 039e 9A62     		str	r2, [r3, #40]
+ 112:../src/K1921VK01T_init.c **** 	//NT_COMMON_REG->GPIOPCTLE_bit.PIN1 = 2;	//UART_TxD[2]	Использована под TRST JTAG'а
+ 113:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN2 = 2;	//RAM_DATA[6]
+ 439              		.loc 1 113 0
+ 440 03a0 0023     		movs	r3, #0
+ 441 03a2 C8F20303 		movt	r3, 32771
+ 442 03a6 9A6A     		ldr	r2, [r3, #40]
+ 443 03a8 0221     		movs	r1, #2
+ 444 03aa 61F30512 		bfi	r2, r1, #4, #2
+ 445 03ae 9A62     		str	r2, [r3, #40]
+ 114:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN3 = 2;	//RAM_DATA[7]
+ 446              		.loc 1 114 0
+ 447 03b0 0023     		movs	r3, #0
+ 448 03b2 C8F20303 		movt	r3, 32771
+ 449 03b6 9A6A     		ldr	r2, [r3, #40]
+ 450 03b8 0221     		movs	r1, #2
+ 451 03ba 61F38712 		bfi	r2, r1, #6, #2
+ 452 03be 9A62     		str	r2, [r3, #40]
+ 115:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN4 = 2;	//Timer_IN[0]
+ 453              		.loc 1 115 0
+ 454 03c0 0023     		movs	r3, #0
+ 455 03c2 C8F20303 		movt	r3, 32771
+ 456 03c6 9A6A     		ldr	r2, [r3, #40]
+ 457 03c8 0221     		movs	r1, #2
+ 458 03ca 61F30922 		bfi	r2, r1, #8, #2
+ 459 03ce 9A62     		str	r2, [r3, #40]
+ 116:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN5 = 2;	//RAM_LBn
+ 460              		.loc 1 116 0
+ 461 03d0 0023     		movs	r3, #0
+ 462 03d2 C8F20303 		movt	r3, 32771
+ 463 03d6 9A6A     		ldr	r2, [r3, #40]
+ 464 03d8 0221     		movs	r1, #2
+ 465 03da 61F38B22 		bfi	r2, r1, #10, #2
+ 466 03de 9A62     		str	r2, [r3, #40]
+ 117:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN6 = 2;	//RAM_DATA[8]
+ 467              		.loc 1 117 0
+ 468 03e0 0023     		movs	r3, #0
+ 469 03e2 C8F20303 		movt	r3, 32771
+ 470 03e6 9A6A     		ldr	r2, [r3, #40]
+ 471 03e8 0221     		movs	r1, #2
+ 472 03ea 61F30D32 		bfi	r2, r1, #12, #2
+ 473 03ee 9A62     		str	r2, [r3, #40]
+ 118:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN7 = 0;	//USB_DRVVBUS
+ 474              		.loc 1 118 0
+ 475 03f0 0023     		movs	r3, #0
+ 476 03f2 C8F20303 		movt	r3, 32771
+ 477 03f6 9A6A     		ldr	r2, [r3, #40]
+ 478 03f8 6FF38F32 		bfc	r2, #14, #2
+ 479 03fc 9A62     		str	r2, [r3, #40]
+ 119:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN8 = 2;	//SSP_FSS[1]
+ 480              		.loc 1 119 0
+ 481 03fe 0023     		movs	r3, #0
+ 482 0400 C8F20303 		movt	r3, 32771
+ 483 0404 9A6A     		ldr	r2, [r3, #40]
+ 484 0406 0221     		movs	r1, #2
+ 485 0408 61F31142 		bfi	r2, r1, #16, #2
+ 486 040c 9A62     		str	r2, [r3, #40]
+ 120:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN9 = 2;	//SSP_CLK[1]
+ 487              		.loc 1 120 0
+ 488 040e 0023     		movs	r3, #0
+ 489 0410 C8F20303 		movt	r3, 32771
+ 490 0414 9A6A     		ldr	r2, [r3, #40]
+ 491 0416 0221     		movs	r1, #2
+ 492 0418 61F39342 		bfi	r2, r1, #18, #2
+ 493 041c 9A62     		str	r2, [r3, #40]
+ 121:../src/K1921VK01T_init.c **** 	//NT_COMMON_REG->GPIOPCTLE_bit.PIN10 = 2;	//RAM_Ubn		Использована под TDO JTAG'а
+ 122:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN11 = 2;	//RAM_DATA[10]
+ 494              		.loc 1 122 0
+ 495 041e 0023     		movs	r3, #0
+ 496 0420 C8F20303 		movt	r3, 32771
+ 497 0424 9A6A     		ldr	r2, [r3, #40]
+ 498 0426 0221     		movs	r1, #2
+ 499 0428 61F39752 		bfi	r2, r1, #22, #2
+ 500 042c 9A62     		str	r2, [r3, #40]
+ 123:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN12 = 0;	//RAM_DATA[15]
+ 501              		.loc 1 123 0
+ 502 042e 0023     		movs	r3, #0
+ 503 0430 C8F20303 		movt	r3, 32771
+ 504 0434 9A6A     		ldr	r2, [r3, #40]
+ 505 0436 6FF31962 		bfc	r2, #24, #2
+ 506 043a 9A62     		str	r2, [r3, #40]
+ 124:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN13 = 0;	//RAM_Wen
+ 507              		.loc 1 124 0
+ 508 043c 0023     		movs	r3, #0
+ 509 043e C8F20303 		movt	r3, 32771
+ 510 0442 9A6A     		ldr	r2, [r3, #40]
+ 511 0444 6FF39B62 		bfc	r2, #26, #2
+ 512 0448 9A62     		str	r2, [r3, #40]
+ 125:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN14 = 0;	//RAM_Oen[0]
+ 513              		.loc 1 125 0
+ 514 044a 0023     		movs	r3, #0
+ 515 044c C8F20303 		movt	r3, 32771
+ 516 0450 9A6A     		ldr	r2, [r3, #40]
+ 517 0452 6FF31D72 		bfc	r2, #28, #2
+ 518 0456 9A62     		str	r2, [r3, #40]
+ 126:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLE_bit.PIN15 = 0;	//RAM_Oen[1]
+ 519              		.loc 1 126 0
+ 520 0458 0023     		movs	r3, #0
+ 521 045a C8F20303 		movt	r3, 32771
+ 522 045e 9A6A     		ldr	r2, [r3, #40]
+ 523 0460 6FF39F72 		bfc	r2, #30, #2
+ 524 0464 9A62     		str	r2, [r3, #40]
+ 127:../src/K1921VK01T_init.c **** 
+ 128:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN0 = 2;	//SSP_TxD[1]
+ 525              		.loc 1 128 0
+ 526 0466 0023     		movs	r3, #0
+ 527 0468 C8F20303 		movt	r3, 32771
+ 528 046c DA6A     		ldr	r2, [r3, #44]
+ 529 046e 0221     		movs	r1, #2
+ 530 0470 61F30102 		bfi	r2, r1, #0, #2
+ 531 0474 DA62     		str	r2, [r3, #44]
+ 129:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN1 = 2;	//RAM_DATA[11]
+ 532              		.loc 1 129 0
+ 533 0476 0023     		movs	r3, #0
+ 534 0478 C8F20303 		movt	r3, 32771
+ 535 047c DA6A     		ldr	r2, [r3, #44]
+ 536 047e 0221     		movs	r1, #2
+ 537 0480 61F38302 		bfi	r2, r1, #2, #2
+ 538 0484 DA62     		str	r2, [r3, #44]
+ 130:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN2 = 1;	//SSP_CLK[3]
+ 539              		.loc 1 130 0
+ 540 0486 0023     		movs	r3, #0
+ 541 0488 C8F20303 		movt	r3, 32771
+ 542 048c DA6A     		ldr	r2, [r3, #44]
+ 543 048e 0121     		movs	r1, #1
+ 544 0490 61F30512 		bfi	r2, r1, #4, #2
+ 545 0494 DA62     		str	r2, [r3, #44]
+ 131:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN3 = 2;	//RAM_DATA[14]
+ 546              		.loc 1 131 0
+ 547 0496 0023     		movs	r3, #0
+ 548 0498 C8F20303 		movt	r3, 32771
+ 549 049c DA6A     		ldr	r2, [r3, #44]
+ 550 049e 0221     		movs	r1, #2
+ 551 04a0 61F38712 		bfi	r2, r1, #6, #2
+ 552 04a4 DA62     		str	r2, [r3, #44]
+ 132:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN4 = 2;	//UART_RxD[2]
+ 553              		.loc 1 132 0
+ 554 04a6 0023     		movs	r3, #0
+ 555 04a8 C8F20303 		movt	r3, 32771
+ 556 04ac DA6A     		ldr	r2, [r3, #44]
+ 557 04ae 0221     		movs	r1, #2
+ 558 04b0 61F30922 		bfi	r2, r1, #8, #2
+ 559 04b4 DA62     		str	r2, [r3, #44]
+ 133:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN5 = 2;	//RAM_DATA[9]
+ 560              		.loc 1 133 0
+ 561 04b6 0023     		movs	r3, #0
+ 562 04b8 C8F20303 		movt	r3, 32771
+ 563 04bc DA6A     		ldr	r2, [r3, #44]
+ 564 04be 0221     		movs	r1, #2
+ 565 04c0 61F38B22 		bfi	r2, r1, #10, #2
+ 566 04c4 DA62     		str	r2, [r3, #44]
+ 134:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN6 = 0;	//RAM_Cen[0]
+ 567              		.loc 1 134 0
+ 568 04c6 0023     		movs	r3, #0
+ 569 04c8 C8F20303 		movt	r3, 32771
+ 570 04cc DA6A     		ldr	r2, [r3, #44]
+ 571 04ce 6FF30D32 		bfc	r2, #12, #2
+ 572 04d2 DA62     		str	r2, [r3, #44]
+ 135:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN7 = 0;	//RAM_Cen[1]
+ 573              		.loc 1 135 0
+ 574 04d4 0023     		movs	r3, #0
+ 575 04d6 C8F20303 		movt	r3, 32771
+ 576 04da DA6A     		ldr	r2, [r3, #44]
+ 577 04dc 6FF38F32 		bfc	r2, #14, #2
+ 578 04e0 DA62     		str	r2, [r3, #44]
+ 136:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN8 = 0;	//RAM_LBn
+ 579              		.loc 1 136 0
+ 580 04e2 0023     		movs	r3, #0
+ 581 04e4 C8F20303 		movt	r3, 32771
+ 582 04e8 DA6A     		ldr	r2, [r3, #44]
+ 583 04ea 6FF31142 		bfc	r2, #16, #2
+ 584 04ee DA62     		str	r2, [r3, #44]
+ 137:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN9 = 0;	//RAM_Ubn
+ 585              		.loc 1 137 0
+ 586 04f0 0023     		movs	r3, #0
+ 587 04f2 C8F20303 		movt	r3, 32771
+ 588 04f6 DA6A     		ldr	r2, [r3, #44]
+ 589 04f8 6FF39342 		bfc	r2, #18, #2
+ 590 04fc DA62     		str	r2, [r3, #44]
+ 138:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN10 = 1;	//---
+ 591              		.loc 1 138 0
+ 592 04fe 0023     		movs	r3, #0
+ 593 0500 C8F20303 		movt	r3, 32771
+ 594 0504 DA6A     		ldr	r2, [r3, #44]
+ 595 0506 0121     		movs	r1, #1
+ 596 0508 61F31552 		bfi	r2, r1, #20, #2
+ 597 050c DA62     		str	r2, [r3, #44]
+ 139:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN11 = 1;	//---
+ 598              		.loc 1 139 0
+ 599 050e 0023     		movs	r3, #0
+ 600 0510 C8F20303 		movt	r3, 32771
+ 601 0514 DA6A     		ldr	r2, [r3, #44]
+ 602 0516 0121     		movs	r1, #1
+ 603 0518 61F39752 		bfi	r2, r1, #22, #2
+ 604 051c DA62     		str	r2, [r3, #44]
+ 140:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN12 = 1;	//UART_RI[2]
+ 605              		.loc 1 140 0
+ 606 051e 0023     		movs	r3, #0
+ 607 0520 C8F20303 		movt	r3, 32771
+ 608 0524 DA6A     		ldr	r2, [r3, #44]
+ 609 0526 0121     		movs	r1, #1
+ 610 0528 61F31962 		bfi	r2, r1, #24, #2
+ 611 052c DA62     		str	r2, [r3, #44]
+ 141:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN13 = 1;	//UART_DTR[2]
+ 612              		.loc 1 141 0
+ 613 052e 0023     		movs	r3, #0
+ 614 0530 C8F20303 		movt	r3, 32771
+ 615 0534 DA6A     		ldr	r2, [r3, #44]
+ 616 0536 0121     		movs	r1, #1
+ 617 0538 61F39B62 		bfi	r2, r1, #26, #2
+ 618 053c DA62     		str	r2, [r3, #44]
+ 142:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN14 = 1;	//UART_RTS[2]
+ 619              		.loc 1 142 0
+ 620 053e 0023     		movs	r3, #0
+ 621 0540 C8F20303 		movt	r3, 32771
+ 622 0544 DA6A     		ldr	r2, [r3, #44]
+ 623 0546 0121     		movs	r1, #1
+ 624 0548 61F31D72 		bfi	r2, r1, #28, #2
+ 625 054c DA62     		str	r2, [r3, #44]
+ 143:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLF_bit.PIN15 = 1;	//UART_DCD[2]
+ 626              		.loc 1 143 0
+ 627 054e 0023     		movs	r3, #0
+ 628 0550 C8F20303 		movt	r3, 32771
+ 629 0554 DA6A     		ldr	r2, [r3, #44]
+ 630 0556 0121     		movs	r1, #1
+ 631 0558 61F39F72 		bfi	r2, r1, #30, #2
+ 632 055c DA62     		str	r2, [r3, #44]
+ 144:../src/K1921VK01T_init.c **** 
+ 145:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN0 = 0;	//sda[0]
+ 633              		.loc 1 145 0
+ 634 055e 0023     		movs	r3, #0
+ 635 0560 C8F20303 		movt	r3, 32771
+ 636 0564 1A6B     		ldr	r2, [r3, #48]
+ 637 0566 6FF30102 		bfc	r2, #0, #2
+ 638 056a 1A63     		str	r2, [r3, #48]
+ 146:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN1 = 0;	//eCMP_OUT[0]
+ 639              		.loc 1 146 0
+ 640 056c 0023     		movs	r3, #0
+ 641 056e C8F20303 		movt	r3, 32771
+ 642 0572 1A6B     		ldr	r2, [r3, #48]
+ 643 0574 6FF38302 		bfc	r2, #2, #2
+ 644 0578 1A63     		str	r2, [r3, #48]
+ 147:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN2 = 2;	//SSP_RxD[1]
+ 645              		.loc 1 147 0
+ 646 057a 0023     		movs	r3, #0
+ 647 057c C8F20303 		movt	r3, 32771
+ 648 0580 1A6B     		ldr	r2, [r3, #48]
+ 649 0582 0221     		movs	r1, #2
+ 650 0584 61F30512 		bfi	r2, r1, #4, #2
+ 651 0588 1A63     		str	r2, [r3, #48]
+ 148:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN3 = 1;	//SSP_FSS[3]
+ 652              		.loc 1 148 0
+ 653 058a 0023     		movs	r3, #0
+ 654 058c C8F20303 		movt	r3, 32771
+ 655 0590 1A6B     		ldr	r2, [r3, #48]
+ 656 0592 0121     		movs	r1, #1
+ 657 0594 61F38712 		bfi	r2, r1, #6, #2
+ 658 0598 1A63     		str	r2, [r3, #48]
+ 149:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN4 = 2;	//UART_TxD[2]
+ 659              		.loc 1 149 0
+ 660 059a 0023     		movs	r3, #0
+ 661 059c C8F20303 		movt	r3, 32771
+ 662 05a0 1A6B     		ldr	r2, [r3, #48]
+ 663 05a2 0221     		movs	r1, #2
+ 664 05a4 61F30922 		bfi	r2, r1, #8, #2
+ 665 05a8 1A63     		str	r2, [r3, #48]
+ 150:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN5 = 2;	//RAM_DATA[13]
+ 666              		.loc 1 150 0
+ 667 05aa 0023     		movs	r3, #0
+ 668 05ac C8F20303 		movt	r3, 32771
+ 669 05b0 1A6B     		ldr	r2, [r3, #48]
+ 670 05b2 0221     		movs	r1, #2
+ 671 05b4 61F38B22 		bfi	r2, r1, #10, #2
+ 672 05b8 1A63     		str	r2, [r3, #48]
+ 151:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN6 = 2;	//RAM_DATA[15]
+ 673              		.loc 1 151 0
+ 674 05ba 0023     		movs	r3, #0
+ 675 05bc C8F20303 		movt	r3, 32771
+ 676 05c0 1A6B     		ldr	r2, [r3, #48]
+ 677 05c2 0221     		movs	r1, #2
+ 678 05c4 61F30D32 		bfi	r2, r1, #12, #2
+ 679 05c8 1A63     		str	r2, [r3, #48]
+ 152:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN7 = 2;	//RAM_DATA[5]
+ 680              		.loc 1 152 0
+ 681 05ca 0023     		movs	r3, #0
+ 682 05cc C8F20303 		movt	r3, 32771
+ 683 05d0 1A6B     		ldr	r2, [r3, #48]
+ 684 05d2 0221     		movs	r1, #2
+ 685 05d4 61F38F32 		bfi	r2, r1, #14, #2
+ 686 05d8 1A63     		str	r2, [r3, #48]
+ 153:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN8 = 1;	//UART_DSR[2]
+ 687              		.loc 1 153 0
+ 688 05da 0023     		movs	r3, #0
+ 689 05dc C8F20303 		movt	r3, 32771
+ 690 05e0 1A6B     		ldr	r2, [r3, #48]
+ 691 05e2 0121     		movs	r1, #1
+ 692 05e4 61F31142 		bfi	r2, r1, #16, #2
+ 693 05e8 1A63     		str	r2, [r3, #48]
+ 154:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN9 = 2;	//UART_RTS[3]
+ 694              		.loc 1 154 0
+ 695 05ea 0023     		movs	r3, #0
+ 696 05ec C8F20303 		movt	r3, 32771
+ 697 05f0 1A6B     		ldr	r2, [r3, #48]
+ 698 05f2 0221     		movs	r1, #2
+ 699 05f4 61F39342 		bfi	r2, r1, #18, #2
+ 700 05f8 1A63     		str	r2, [r3, #48]
+ 155:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN10 = 2;	//---
+ 701              		.loc 1 155 0
+ 702 05fa 0023     		movs	r3, #0
+ 703 05fc C8F20303 		movt	r3, 32771
+ 704 0600 1A6B     		ldr	r2, [r3, #48]
+ 705 0602 0221     		movs	r1, #2
+ 706 0604 61F31552 		bfi	r2, r1, #20, #2
+ 707 0608 1A63     		str	r2, [r3, #48]
+ 156:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN11 = 2;	//Timer_IN[1]
+ 708              		.loc 1 156 0
+ 709 060a 0023     		movs	r3, #0
+ 710 060c C8F20303 		movt	r3, 32771
+ 711 0610 1A6B     		ldr	r2, [r3, #48]
+ 712 0612 0221     		movs	r1, #2
+ 713 0614 61F39752 		bfi	r2, r1, #22, #2
+ 714 0618 1A63     		str	r2, [r3, #48]
+ 157:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN12 = 2;	//Timer_IN[2]
+ 715              		.loc 1 157 0
+ 716 061a 0023     		movs	r3, #0
+ 717 061c C8F20303 		movt	r3, 32771
+ 718 0620 1A6B     		ldr	r2, [r3, #48]
+ 719 0622 0221     		movs	r1, #2
+ 720 0624 61F31962 		bfi	r2, r1, #24, #2
+ 721 0628 1A63     		str	r2, [r3, #48]
+ 158:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN13 = 0;	//trace_dat[0]
+ 722              		.loc 1 158 0
+ 723 062a 0023     		movs	r3, #0
+ 724 062c C8F20303 		movt	r3, 32771
+ 725 0630 1A6B     		ldr	r2, [r3, #48]
+ 726 0632 6FF39B62 		bfc	r2, #26, #2
+ 727 0636 1A63     		str	r2, [r3, #48]
+ 159:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN14 = 0;	//trace_dat[1]
+ 728              		.loc 1 159 0
+ 729 0638 0023     		movs	r3, #0
+ 730 063a C8F20303 		movt	r3, 32771
+ 731 063e 1A6B     		ldr	r2, [r3, #48]
+ 732 0640 6FF31D72 		bfc	r2, #28, #2
+ 733 0644 1A63     		str	r2, [r3, #48]
+ 160:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLG_bit.PIN15 = 0;	//trace_dat[2]
+ 734              		.loc 1 160 0
+ 735 0646 0023     		movs	r3, #0
+ 736 0648 C8F20303 		movt	r3, 32771
+ 737 064c 1A6B     		ldr	r2, [r3, #48]
+ 738 064e 6FF39F72 		bfc	r2, #30, #2
+ 739 0652 1A63     		str	r2, [r3, #48]
+ 161:../src/K1921VK01T_init.c **** 
+ 162:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLH_bit.PIN0 = 0;	//trace_dat[3]
+ 740              		.loc 1 162 0
+ 741 0654 0023     		movs	r3, #0
+ 742 0656 C8F20303 		movt	r3, 32771
+ 743 065a 5A6B     		ldr	r2, [r3, #52]
+ 744 065c 6FF30102 		bfc	r2, #0, #2
+ 745 0660 5A63     		str	r2, [r3, #52]
+ 163:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLH_bit.PIN1 = 1;	//---
+ 746              		.loc 1 163 0
+ 747 0662 0023     		movs	r3, #0
+ 748 0664 C8F20303 		movt	r3, 32771
+ 749 0668 5A6B     		ldr	r2, [r3, #52]
+ 750 066a 0121     		movs	r1, #1
+ 751 066c 61F38302 		bfi	r2, r1, #2, #2
+ 752 0670 5A63     		str	r2, [r3, #52]
+ 164:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLH_bit.PIN2 = 1;	//---
+ 753              		.loc 1 164 0
+ 754 0672 0023     		movs	r3, #0
+ 755 0674 C8F20303 		movt	r3, 32771
+ 756 0678 5A6B     		ldr	r2, [r3, #52]
+ 757 067a 0121     		movs	r1, #1
+ 758 067c 61F30512 		bfi	r2, r1, #4, #2
+ 759 0680 5A63     		str	r2, [r3, #52]
+ 165:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLH_bit.PIN3 = 1;	//---
+ 760              		.loc 1 165 0
+ 761 0682 0023     		movs	r3, #0
+ 762 0684 C8F20303 		movt	r3, 32771
+ 763 0688 5A6B     		ldr	r2, [r3, #52]
+ 764 068a 0121     		movs	r1, #1
+ 765 068c 61F38712 		bfi	r2, r1, #6, #2
+ 766 0690 5A63     		str	r2, [r3, #52]
+ 166:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLH_bit.PIN4 = 1;	//---
+ 767              		.loc 1 166 0
+ 768 0692 0023     		movs	r3, #0
+ 769 0694 C8F20303 		movt	r3, 32771
+ 770 0698 5A6B     		ldr	r2, [r3, #52]
+ 771 069a 0121     		movs	r1, #1
+ 772 069c 61F30922 		bfi	r2, r1, #8, #2
+ 773 06a0 5A63     		str	r2, [r3, #52]
+ 167:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLH_bit.PIN5 = 1;	//---
+ 774              		.loc 1 167 0
+ 775 06a2 0023     		movs	r3, #0
+ 776 06a4 C8F20303 		movt	r3, 32771
+ 777 06a8 5A6B     		ldr	r2, [r3, #52]
+ 778 06aa 0121     		movs	r1, #1
+ 779 06ac 61F38B22 		bfi	r2, r1, #10, #2
+ 780 06b0 5A63     		str	r2, [r3, #52]
+ 168:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLH_bit.PIN6 = 1;	//---
+ 781              		.loc 1 168 0
+ 782 06b2 0023     		movs	r3, #0
+ 783 06b4 C8F20303 		movt	r3, 32771
+ 784 06b8 5A6B     		ldr	r2, [r3, #52]
+ 785 06ba 0121     		movs	r1, #1
+ 786 06bc 61F30D32 		bfi	r2, r1, #12, #2
+ 787 06c0 5A63     		str	r2, [r3, #52]
+ 169:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIOPCTLH_bit.PIN7 = 1;	//---
+ 788              		.loc 1 169 0
+ 789 06c2 0023     		movs	r3, #0
+ 790 06c4 C8F20303 		movt	r3, 32771
+ 791 06c8 5A6B     		ldr	r2, [r3, #52]
+ 792 06ca 0121     		movs	r1, #1
+ 793 06cc 61F38F32 		bfi	r2, r1, #14, #2
+ 794 06d0 5A63     		str	r2, [r3, #52]
+ 170:../src/K1921VK01T_init.c **** }
+ 795              		.loc 1 170 0
+ 796 06d2 BD46     		mov	sp, r7
+ 797              		@ sp needed
+ 798 06d4 5DF8047B 		ldr	r7, [sp], #4
+ 799 06d8 7047     		bx	lr
+ 800              		.cfi_endproc
+ 801              	.LFE111:
+ 803 06da 00BF     		.section	.text.InitCLK,"ax",%progbits
+ 804              		.align	2
+ 805              		.global	InitCLK
+ 806              		.thumb
+ 807              		.thumb_func
+ 809              	InitCLK:
+ 810              	.LFB112:
+ 171:../src/K1921VK01T_init.c **** 
+ 172:../src/K1921VK01T_init.c **** void InitCLK(void)
+ 173:../src/K1921VK01T_init.c **** {
+ 811              		.loc 1 173 0
+ 812              		.cfi_startproc
+ 813              		@ args = 0, pretend = 0, frame = 8
+ 814              		@ frame_needed = 1, uses_anonymous_args = 0
+ 815 0000 80B5     		push	{r7, lr}
+ 816              		.cfi_def_cfa_offset 8
+ 817              		.cfi_offset 7, -8
+ 818              		.cfi_offset 14, -4
+ 819 0002 82B0     		sub	sp, sp, #8
+ 820              		.cfi_def_cfa_offset 16
+ 821 0004 00AF     		add	r7, sp, #0
+ 822              		.cfi_def_cfa_register 7
+ 174:../src/K1921VK01T_init.c **** 	volatile int i;
+ 175:../src/K1921VK01T_init.c **** 
+ 176:../src/K1921VK01T_init.c **** 
+ 177:../src/K1921VK01T_init.c **** 	NT_BOOTFLASH->T_ACC = 6;		//Задержка от установки адреса, до считывания данных из флеш-памяти (в т
+ 823              		.loc 1 177 0
+ 824 0006 4FF44043 		mov	r3, #49152
+ 825 000a CAF20103 		movt	r3, 40961
+ 826 000e 0622     		movs	r2, #6
+ 827 0010 C3F88020 		str	r2, [r3, #128]
+ 178:../src/K1921VK01T_init.c **** 
+ 179:../src/K1921VK01T_init.c **** 	//Настройка частоты тактирования
+ 180:../src/K1921VK01T_init.c **** 	//выходная частота равна FOUT = (FIN * NF) / ( NR * NO), где FIN - частота кварца
+ 181:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->PLL_OD = 2;		//Выходной делитель PLL NO=2
+ 828              		.loc 1 181 0
+ 829 0014 0023     		movs	r3, #0
+ 830 0016 C8F20303 		movt	r3, 32771
+ 831 001a 0222     		movs	r2, #2
+ 832 001c C3F89820 		str	r2, [r3, #152]
+ 182:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->PLL_NR = 1;		//Опорный делитель PLL NR=R_PLL+2=3
+ 833              		.loc 1 182 0
+ 834 0020 0023     		movs	r3, #0
+ 835 0022 C8F20303 		movt	r3, 32771
+ 836 0026 0122     		movs	r2, #1
+ 837 0028 C3F89C20 		str	r2, [r3, #156]
+ 183:../src/K1921VK01T_init.c **** #ifdef QUARTZ_10MHZ
+ 184:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->PLL_NF = 58;		//Делитель обратной связи PLL NF=F_PLL+2=60
+ 185:../src/K1921VK01T_init.c **** #endif
+ 186:../src/K1921VK01T_init.c **** #ifdef QUARTZ_12MHZ
+ 187:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->PLL_NF = 48;		//Делитель обратной связи PLL NF=F_PLL+2=50
+ 838              		.loc 1 187 0
+ 839 002c 0023     		movs	r3, #0
+ 840 002e C8F20303 		movt	r3, 32771
+ 841 0032 3022     		movs	r2, #48
+ 842 0034 C3F8A020 		str	r2, [r3, #160]
+ 843              	.L5:
+ 188:../src/K1921VK01T_init.c **** #endif
+ 189:../src/K1921VK01T_init.c **** 	//FOUT = 12*50/(3*2) = 100 МГц, вроде сходится
+ 190:../src/K1921VK01T_init.c **** 	do
+ 191:../src/K1921VK01T_init.c **** 	{
+ 192:../src/K1921VK01T_init.c **** 		//Выбор источника синхросигнала
+ 193:../src/K1921VK01T_init.c **** 		NT_COMMON_REG->SYS_CLK = SYSCLK_REFCLK;		//Выбор источника зависит от состояния сигнала на входе 
+ 844              		.loc 1 193 0
+ 845 0038 0023     		movs	r3, #0
+ 846 003a C8F20303 		movt	r3, 32771
+ 847 003e 0022     		movs	r2, #0
+ 848 0040 C3F8B820 		str	r2, [r3, #184]
+ 194:../src/K1921VK01T_init.c **** 		NT_COMMON_REG->SYS_CLK = SYSCLK_PLLCLK;		//Блок PLL
+ 849              		.loc 1 194 0
+ 850 0044 0023     		movs	r3, #0
+ 851 0046 C8F20303 		movt	r3, 32771
+ 852 004a 0322     		movs	r2, #3
+ 853 004c C3F8B820 		str	r2, [r3, #184]
+ 195:../src/K1921VK01T_init.c **** 		for(i = 0; i < 50; i++);
+ 854              		.loc 1 195 0
+ 855 0050 0023     		movs	r3, #0
+ 856 0052 3B60     		str	r3, [r7]
+ 857 0054 02E0     		b	.L3
+ 858              	.L4:
+ 859              		.loc 1 195 0 is_stmt 0 discriminator 2
+ 860 0056 3B68     		ldr	r3, [r7]
+ 861 0058 0133     		adds	r3, r3, #1
+ 862 005a 3B60     		str	r3, [r7]
+ 863              	.L3:
+ 864              		.loc 1 195 0 discriminator 1
+ 865 005c 3B68     		ldr	r3, [r7]
+ 866 005e 312B     		cmp	r3, #49
+ 867 0060 F9DD     		ble	.L4
+ 196:../src/K1921VK01T_init.c **** 	}
+ 197:../src/K1921VK01T_init.c **** 	while (NT_COMMON_REG->SYS_CLK_bit.CURR_SRC != SYSCLK_PLLCLK);	//Текущий источник тактирования долж
+ 868              		.loc 1 197 0 is_stmt 1
+ 869 0062 0023     		movs	r3, #0
+ 870 0064 C8F20303 		movt	r3, 32771
+ 871 0068 D3F8B830 		ldr	r3, [r3, #184]
+ 872 006c C3F30223 		ubfx	r3, r3, #8, #3
+ 873 0070 DBB2     		uxtb	r3, r3
+ 874 0072 032B     		cmp	r3, #3
+ 875 0074 E0D1     		bne	.L5
+ 198:../src/K1921VK01T_init.c **** 
+ 199:../src/K1921VK01T_init.c **** 
+ 200:../src/K1921VK01T_init.c **** 
+ 201:../src/K1921VK01T_init.c **** 
+ 202:../src/K1921VK01T_init.c **** 	// Разрешение работы периферии
+ 203:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->APB_CLK = 0x7FFFF | 0x1000000 | 0x80000;
+ 876              		.loc 1 203 0
+ 877 0076 0023     		movs	r3, #0
+ 878 0078 C8F20303 		movt	r3, 32771
+ 879 007c 4FF6FF72 		movw	r2, #65535
+ 880 0080 C0F20F12 		movt	r2, 271
+ 881 0084 C3F8BC20 		str	r2, [r3, #188]
+ 882              	.LBB2:
+ 204:../src/K1921VK01T_init.c **** 
+ 205:../src/K1921VK01T_init.c **** 	for (int i = 0; i < 100; i++){//чтобы типа прошло время... пускай там порезетится
+ 883              		.loc 1 205 0
+ 884 0088 0023     		movs	r3, #0
+ 885 008a 7B60     		str	r3, [r7, #4]
+ 886 008c 0EE0     		b	.L6
+ 887              	.L7:
+ 206:../src/K1921VK01T_init.c **** 		NT_COMMON_REG->PER_RST0=0;
+ 888              		.loc 1 206 0 discriminator 2
+ 889 008e 0023     		movs	r3, #0
+ 890 0090 C8F20303 		movt	r3, 32771
+ 891 0094 0022     		movs	r2, #0
+ 892 0096 C3F8C820 		str	r2, [r3, #200]
+ 207:../src/K1921VK01T_init.c **** 		NT_COMMON_REG->PER_RST1=0;
+ 893              		.loc 1 207 0 discriminator 2
+ 894 009a 0023     		movs	r3, #0
+ 895 009c C8F20303 		movt	r3, 32771
+ 896 00a0 0022     		movs	r2, #0
+ 897 00a2 C3F8CC20 		str	r2, [r3, #204]
+ 205:../src/K1921VK01T_init.c **** 		NT_COMMON_REG->PER_RST0=0;
+ 898              		.loc 1 205 0 discriminator 2
+ 899 00a6 7B68     		ldr	r3, [r7, #4]
+ 900 00a8 0133     		adds	r3, r3, #1
+ 901 00aa 7B60     		str	r3, [r7, #4]
+ 902              	.L6:
+ 205:../src/K1921VK01T_init.c **** 		NT_COMMON_REG->PER_RST0=0;
+ 903              		.loc 1 205 0 is_stmt 0 discriminator 1
+ 904 00ac 7B68     		ldr	r3, [r7, #4]
+ 905 00ae 632B     		cmp	r3, #99
+ 906 00b0 EDDD     		ble	.L7
+ 907              	.LBE2:
+ 208:../src/K1921VK01T_init.c **** 	}
+ 209:../src/K1921VK01T_init.c **** 
+ 210:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->PER_RST0 = 0xFFFFFFFF;
+ 908              		.loc 1 210 0 is_stmt 1
+ 909 00b2 0023     		movs	r3, #0
+ 910 00b4 C8F20303 		movt	r3, 32771
+ 911 00b8 4FF0FF32 		mov	r2, #-1
+ 912 00bc C3F8C820 		str	r2, [r3, #200]
+ 211:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->PER_RST1 = 0xFFFFFFFF;
+ 913              		.loc 1 211 0
+ 914 00c0 0023     		movs	r3, #0
+ 915 00c2 C8F20303 		movt	r3, 32771
+ 916 00c6 4FF0FF32 		mov	r2, #-1
+ 917 00ca C3F8CC20 		str	r2, [r3, #204]
+ 212:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIODEN0=0xFFFFFFFF;
+ 918              		.loc 1 212 0
+ 919 00ce 0023     		movs	r3, #0
+ 920 00d0 C8F20303 		movt	r3, 32771
+ 921 00d4 4FF0FF32 		mov	r2, #-1
+ 922 00d8 1A60     		str	r2, [r3]
+ 213:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIODEN1=0xFFFFFFFF;
+ 923              		.loc 1 213 0
+ 924 00da 0023     		movs	r3, #0
+ 925 00dc C8F20303 		movt	r3, 32771
+ 926 00e0 4FF0FF32 		mov	r2, #-1
+ 927 00e4 5A60     		str	r2, [r3, #4]
+ 214:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIODEN2=0xFFFFFFFF;
+ 928              		.loc 1 214 0
+ 929 00e6 0023     		movs	r3, #0
+ 930 00e8 C8F20303 		movt	r3, 32771
+ 931 00ec 4FF0FF32 		mov	r2, #-1
+ 932 00f0 9A60     		str	r2, [r3, #8]
+ 215:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->GPIODEN3=0xFFFFFFFF;
+ 933              		.loc 1 215 0
+ 934 00f2 0023     		movs	r3, #0
+ 935 00f4 C8F20303 		movt	r3, 32771
+ 936 00f8 4FF0FF32 		mov	r2, #-1
+ 937 00fc DA60     		str	r2, [r3, #12]
+ 216:../src/K1921VK01T_init.c **** 
+ 217:../src/K1921VK01T_init.c **** 	// Настройка тактирования АЦП (12 МГц)
+ 218:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->ADC_CTRL0 = 0x0F0F0F0F;
+ 938              		.loc 1 218 0
+ 939 00fe 0023     		movs	r3, #0
+ 940 0100 C8F20303 		movt	r3, 32771
+ 941 0104 4FF00F32 		mov	r2, #252645135
+ 942 0108 C3F8A820 		str	r2, [r3, #168]
+ 219:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->ADC_CTRL1 = 0x0F0F0F0F;
+ 943              		.loc 1 219 0
+ 944 010c 0023     		movs	r3, #0
+ 945 010e C8F20303 		movt	r3, 32771
+ 946 0112 4FF00F32 		mov	r2, #252645135
+ 947 0116 C3F8AC20 		str	r2, [r3, #172]
+ 220:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->ADC_CTRL2 = 0x0F0F0F0F;
+ 948              		.loc 1 220 0
+ 949 011a 0023     		movs	r3, #0
+ 950 011c C8F20303 		movt	r3, 32771
+ 951 0120 4FF00F32 		mov	r2, #252645135
+ 952 0124 C3F83C21 		str	r2, [r3, #316]
+ 221:../src/K1921VK01T_init.c **** 
+ 222:../src/K1921VK01T_init.c **** 	// Настройка тактирования UART (25 МГЦ)
+ 223:../src/K1921VK01T_init.c **** 	NT_COMMON_REG->UART_CLK = 0x07070707;
+ 953              		.loc 1 223 0
+ 954 0128 0023     		movs	r3, #0
+ 955 012a C8F20303 		movt	r3, 32771
+ 956 012e 4FF00732 		mov	r2, #117901063
+ 957 0132 C3F8C020 		str	r2, [r3, #192]
+ 224:../src/K1921VK01T_init.c **** 	//NT_COMMON_REG->SPI_CLK  = 0x70000;
+ 225:../src/K1921VK01T_init.c **** 
+ 226:../src/K1921VK01T_init.c **** 
+ 227:../src/K1921VK01T_init.c **** 
+ 228:../src/K1921VK01T_init.c **** 	K1921VK01T_GPIO_SafeInit();
+ 958              		.loc 1 228 0
+ 959 0136 FFF7FEFF 		bl	K1921VK01T_GPIO_SafeInit
+ 229:../src/K1921VK01T_init.c **** }
+ 960              		.loc 1 229 0
+ 961 013a 0837     		adds	r7, r7, #8
+ 962 013c BD46     		mov	sp, r7
+ 963              		@ sp needed
+ 964 013e 80BD     		pop	{r7, pc}
+ 965              		.cfi_endproc
+ 966              	.LFE112:
+ 968              		.text
+ 969              	.Letext0:
+ 970              		.file 2 "d:\\vector\\vectoride\\codebench\\arm-none-eabi\\include\\stdint.h"
+ 971              		.file 3 "D:\\Worcspace\\VectorIDE_Examples\\Example_LED_blinking\\include/K1921BK01T.h"
+ 972              		.file 4 "D:\\Worcspace\\VectorIDE_Examples\\Example_LED_blinking\\include/core_cm4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 K1921VK01T_init.c
+C:\Users\E786~1\AppData\Local\Temp\cc9eJf4B.s:21     .text.K1921VK01T_GPIO_SafeInit:00000000 $t
+C:\Users\E786~1\AppData\Local\Temp\cc9eJf4B.s:26     .text.K1921VK01T_GPIO_SafeInit:00000000 K1921VK01T_GPIO_SafeInit
+C:\Users\E786~1\AppData\Local\Temp\cc9eJf4B.s:804    .text.InitCLK:00000000 $t
+C:\Users\E786~1\AppData\Local\Temp\cc9eJf4B.s:809    .text.InitCLK:00000000 InitCLK
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.275fe677ac8f53c8226ddbef40ce31e9
+                           .group:00000000 wm4.DSP.h.23.611bad0b8a00e7fe39a9694358e6c103
+                           .group:00000000 wm4.newlib.h.8.384a112feabb3bef7b573ae48cde2e3b
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4.config.h.183.aa62afef667fb61d15fa64c48beb2f14
+                           .group:00000000 wm4._ansi.h.23.2147fde150631f5584b9dc29b914d1b8
+                           .group:00000000 wm4.stdint.h.20.54ad762faa59e3c05491630641c8d8bf
+                           .group:00000000 wm4.K1921BK01T.h.30.c4e3103d62bd338f6319b0614b42d696
+                           .group:00000000 wm4.core_cm4.h.32.6924bf290c61b6d13bd0b16a908fc262
+                           .group:00000000 wm4.core_cmInstr.h.25.d8165482ef3061013a2fc83e2d85f3d9
+                           .group:00000000 wm4.core_cm4_simd.h.29.013e5bcf58dba2d27c60184174208e07
+                           .group:00000000 wm4.core_cm4.h.163.9c946ce8d627386e989c472b2056643f
+                           .group:00000000 wm4.DSP.h.60.b4208c1bfa511913aebc0abf00a1a0c7
+
+NO UNDEFINED SYMBOLS
