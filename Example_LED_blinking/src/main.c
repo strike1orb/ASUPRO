@@ -3,6 +3,7 @@
 #include "stdbool.h"
 
 #define VD123_ON 123
+#define VD1222_ON 1222
 #define VD8_ON NT_GPIOC->MASKHIGHBYTE_bit[32].MASKHB = 0
 #define VD8_OFF NT_GPIOC->MASKHIGHBYTE_bit[32].MASKHB = 32
 #define VD9_ON NT_GPIOC->MASKHIGHBYTE_bit[64].MASKHB = 0
